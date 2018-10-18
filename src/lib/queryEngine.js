@@ -171,6 +171,5 @@ module.exports = {
   createGroup,
   addMember,
   removeMember,
-  
-};
 
+};

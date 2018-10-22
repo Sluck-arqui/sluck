@@ -1,0 +1,11 @@
+<h1>Reactions</h1>
+
+<h2>Likes</h2>
+<% reactions.likes.forEach(like => { %>
+    <%= like.username %>
+<% }) %>
+
+<h2>Dislikes</h2>
+<% reactions.dislikes.forEach(dislike => { %>
+    <%= dislike.username %>
+<% }) %>

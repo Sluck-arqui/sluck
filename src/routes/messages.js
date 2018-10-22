@@ -57,3 +57,11 @@ router.post('messages-add-dislike', '/:id', async (ctx) => {
   await queryEngine.postDislike(API_URL, headers, message.id);
   // algún redirect
 });
+
+router.get('messages-reactions', '/:id', async (ctx) => {
+  const { message } = ctx.state;
+  const reactions = await queryEngine.fetchReactions(API_URL, headers, id);
+  await ctx.render('messages/show-reactions', {
+    reactions,
+  });
+});

@@ -50,3 +50,10 @@ router.post('messages-add-like', '/:id', async (ctx) => {
   await queryEngine.postLike(API_URL, headers, message.id);
   // algún redirect
 });
+
+router.post('messages-add-dislike', '/:id', async (ctx) => {
+  const { message } = ctx.state;
+  const { headers } = ctx.state;
+  await queryEngine.postDislike(API_URL, headers, message.id);
+  // algún redirect
+});

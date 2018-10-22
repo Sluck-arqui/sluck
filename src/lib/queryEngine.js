@@ -67,8 +67,8 @@ const deleteMessage = async (API_URL, headers, id) => {
 // Likes
 
 // POST Likes
-const postDislike = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/dislike`;
+const postLike = async (API_URL, headers, id) => {
+  const url = `${API_URL}/message/like`;
   const body = { id_message: id };
   const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
   return response;
@@ -162,6 +162,7 @@ module.exports = {
   postCommentMessage,
   patchMessage,
   deleteMessage,
+  postLike,
   postDislike,
   fetchReactions,
   fetchHashtagSearch,

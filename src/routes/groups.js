@@ -21,6 +21,6 @@ router.get('messages-group-show', '/:id', async (ctx) => {
   await ctx.render('groups/show', {
     messages,
     // esta url se pasa para después crear form para agregar comentario
-    addCommentPath: message => ctx.router.url('add-comment-message', message.id),
+    addCommentPath: message => ctx.router.url('messages-add-comment', message.id),
   });
 });

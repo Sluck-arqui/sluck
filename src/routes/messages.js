@@ -8,6 +8,7 @@ const API_URL = 'IP server API'; // probablemente process.env.API_URL
 
 router.param('id', async (id, ctx, next) => {
     const headers = await queryEngine.fetchHeaders(API_URL);
+    ctx.state.headers = headers;
     const message = await queryEngine.fetchMessage(API_URL, headers, id);
     ctx.assert(message, 404);
     ctx.state.message = message;
@@ -21,18 +22,31 @@ router.get('messages-show', '/:id', async (ctx) => {
   await ctx.render('messages/show', {
     message,
     // esta url se pasa para después crear form para agregar comentario
-    addCommentPath: ctx.router.url('add-comment-message', message.id),
+    addCommentPath: ctx.router.url('messages-add-comment', message.id),
   });
 });
 
-// postCommentMessage = async (API_URL, headers, id, comment_text)
-router.post('add-comment-message', '/:id', async (ctx) => {
+router.post('messages-add-comment', '/:id', async (ctx) => {
   const { message } = ctx.state;
-  // probablemente estos headers deberían ser una cookie/session
-  const headers = await queryEngine.fetchHeaders(API_URL);
+  const { headers } = ctx.state;
   // esto supone que se mandó por el post un field comment_text
   await postCommentMessage(API_URL, headers, message.id, ctx.request.body.comment_text);
   
   ctx.redirect("/");
 
+});
+
+
+router.delete('messages-destroy', '/:id', async (ctx) => {
+  const { message } = ctx.state;
+  const { headers } = ctx.state;
+  await queryEngine.deleteMessage(API_URL, headers, message.id);
+  await ctx.render('/');
+});
+
+router.post('messages-add-like', '/:id', async (ctx) => {
+  const { message } = ctx.state;
+  const { headers } = ctx.state;
+  await queryEngine.postLike(API_URL, headers, message.id);
+  // algún redirect
 });

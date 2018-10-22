@@ -20,10 +20,19 @@ router.get('messages-show', '/:id', async (ctx) => {
   
   await ctx.render('messages/show', {
     message,
+    // esta url se pasa para después crear form para agregar comentario
     addCommentPath: ctx.router.url('add-comment-message', message.id),
   });
 });
 
+// postCommentMessage = async (API_URL, headers, id, comment_text)
 router.post('add-comment-message', '/:id', async (ctx) => {
-//   Acá va otra ruta, su url se pasó arriba para poder crear un form donde se agrega comentario al mensaje
+  const { message } = ctx.state;
+  // probablemente estos headers deberían ser una cookie/session
+  const headers = await queryEngine.fetchHeaders(API_URL);
+  // esto supone que se mandó por el post un field comment_text
+  await postCommentMessage(API_URL, headers, message.id, ctx.request.body.comment_text);
+  
+  ctx.redirect("/");
+
 });

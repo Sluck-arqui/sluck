@@ -24,3 +24,4 @@ router.get('messages-group-show', '/:id', async (ctx) => {
     addCommentPath: message => ctx.router.url('messages-add-comment', message.id),
   });
 });
+ module.exports = router;

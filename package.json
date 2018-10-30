@@ -26,6 +26,7 @@
     "node-fetch": "^2.2.0"
   },
   "dependencies": {
+    "ajv": "^6.5.4",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -46,6 +47,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
+    "node-fetch": "^2.2.0",
     "node-sass": "^4.8.3",
     "nodemailer": "^4.6.3",
     "pg": "^7.4.1",

@@ -22,7 +22,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "koa-webpack": "^1.0.0",
-    "nodemon": "^1.17.2"
+    "nodemon": "^1.17.2",
+    "node-fetch": "^2.2.0"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -57,7 +58,8 @@
     "sequelize": "^4.37.4",
     "sequelize-cli": "https://github.com/IIC2513-2018-1/sequelize-cli#iic2513-version",
     "style-loader": "^0.20.3",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "node-fetch": "^2.2.0"
   },
   "engines": {
     "node": "^8.9.0",

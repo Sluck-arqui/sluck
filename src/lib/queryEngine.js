@@ -9,9 +9,31 @@ const buildHeaders = (oauthTokenTerver) => {
   return { OAUTH_TOKEN: oauthTokenTerver };
 };
 
-const fetchHeaders = async (API_URL) => {
-  const url = `${API_URL}/oauth/authorizations/new`;
-  const response = await fetch(url).then(data => data.json().then(json => json));
+const signUpAPI = async (API_URL, username, first_name, last_name, email, password) => {
+  const url = `${API_URL}/register/`;
+  let body = {
+    'username': username,
+    'first_name': first_name,
+    'last_name': last_name,
+    'email': email,
+    'password': password,
+  };
+  body = JSON.stringify(body);
+  console.log(body);
+  const response = await fetch(url, { method: 'POST', body }).then(data => data.text());
+  // const resp = await fetch(url);
+  // const response = await resp.json();
+  console.log(response);
+  return buildHeaders(response.oauth_token_server);
+};
+
+const loginAPI = async (API_URL, username, password) => {
+  const url = `${API_URL}/login`;
+  const body = { username, password };
+  const response = await fetch(url, { method: 'POST', body }).then(data => data.text());
+  // const resp = await fetch(url);
+  // const response = await resp.json();
+  console.log(response);
   return buildHeaders(response.oauth_token_server);
 };
 
@@ -155,7 +177,8 @@ const removeMember = async (API_URL, headers, id_group, user_id) => {
 
 
 module.exports = {
-  fetchHeaders,
+  signUpAPI,
+  loginAPI,
   fetchMessage,
   fetchMessagesGroup,
   postMessageGroup,

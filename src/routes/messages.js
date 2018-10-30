@@ -65,3 +65,5 @@ router.get('messages-reactions', '/:id', async (ctx) => {
     reactions,
   });
 });
+
+module.exports = router;

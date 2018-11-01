@@ -1,2 +1,18 @@
 @import './layout';
 @import './hello';
+
+
+.big-title.black {
+	color: #333333;
+	font-size: 60px;
+}
+
+.dividing.header {
+	border-bottom: 1px solid #D8D8D8;
+	width: 60%;
+	margin: auto;
+	margin-bottom: 7px;
+	margin-top: 20px;
+	height: 20px;
+}
+

@@ -5,108 +5,127 @@ const fetch = require('node-fetch');
 
 // Utilities
 
-const buildHeaders = (oauthTokenTerver) => {
-  return { OAUTH_TOKEN: oauthTokenTerver };
-};
-
 const signUpAPI = async (API_URL, username, first_name, last_name, email, password) => {
   const url = `${API_URL}/register/`;
   let body = {
-    'username': username,
-    'first_name': first_name,
-    'last_name': last_name,
-    'email': email,
-    'password': password,
+    username,
+    first_name,
+    last_name,
+    email,
+    password,
   };
   body = JSON.stringify(body);
-  console.log(body);
-  const response = await fetch(url, { method: 'POST', body }).then(data => data.text());
-  // const resp = await fetch(url);
-  // const response = await resp.json();
-  console.log(response);
-  return buildHeaders(response.oauth_token_server);
+  const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
+  return { OAUTH_TOKEN: response.oauth_token_server };
 };
 
 const loginAPI = async (API_URL, username, password) => {
-  const url = `${API_URL}/login`;
-  const body = { username, password };
-  const response = await fetch(url, { method: 'POST', body }).then(data => data.text());
-  // const resp = await fetch(url);
-  // const response = await resp.json();
-  console.log(response);
-  return buildHeaders(response.oauth_token_server);
+  const url = `${API_URL}/login/`;
+  let body = { username, password };
+  body = JSON.stringify(body);
+  const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
+  return { OAUTH_TOKEN: response.oauth_token_server };
 };
 
 // Messages
 
 // GET Messages
 const fetchMessage = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/${id}`;
-  // const body = {message_id: id };
-  const response = await fetch(url, { headers }).then(data => data.json().then(json => json));
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/?message_id=${id}`;
+  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
   return response;
 };
-const fetchMessagesGroup = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/group/${id}`;
-  // const body = {message_id: id };
-  const response = await fetch(url, { headers }).then(data => data.json().then(json => json));
+
+const fetchGroup = async (API_URL, headers, id) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/group/?group_id=${id}`;
+  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
   return response;
 };
 
 
 // POST Messages
-const postMessageGroup = async (API_URL, headers, id, msg_text) => {
-  const url = `${API_URL}/message/group/${id}`;
-  const body = { text: msg_text };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+const postMessageGroup = async (API_URL, headers, group_id, text) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/group/`;
+  let body = { group_id, text };
+  body = JSON.stringify(body);
+  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;
 };
-const postCommentMessage = async (API_URL, headers, id, comment_text) => {
-  const url = `${API_URL}/message/${id}`;
-  const body = { text: comment_text };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+
+const postCommentMessage = async (API_URL, headers, message_id, text) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/comment/`;
+  const body = { message_id, text };
+  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;
 };
 
 
 // PATCH Messages
-const patchMessage = async (API_URL, headers, id, new_text) => {
-  const url = `${API_URL}/message/${id}`;
-  const body = { text: new_text };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+const patchMessage = async (API_URL, headers, message_id, text) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/`;
+  const body = { message_id, text };
+  const response = await fetch(url, { method: 'PATCH', headers, body }).then(data => data.json());
   return response;
 };
 
 // DELETE Messages
-const deleteMessage = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/${id}`;
-  // const body = { text: new_text };
-  const response = await fetch(url, { headers }).then(data => data.json().then(json => json));
+const deleteMessage = async (API_URL, headers, message_id) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/`;
+  const body = { message_id };
+  const response = await fetch(url, { method: 'DELETE', headers, body }).then(data => data.json());
   return response;
 };
 
 
 // Likes
 
-// POST Likes
-const postLike = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/like`;
-  const body = { id_message: id };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
-  return response;
-};
-const postDislike = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/dislike`;
-  const body = { id_message: id };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+// POST Message Reactions
+const postMessageReaction = async (API_URL, headers, id_message, reaction_type) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/reactions`;
+  const body = { id_message, reaction_type };
+  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;
 };
 
-// "GET" Likes
-const fetchReactions = async (API_URL, headers, id) => {
-  const url = `${API_URL}/message/reactions`;
-  const body = { limit: 10 };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+// POST Comment Reactions
+const postCommentReaction = async (API_URL, headers, thread_id, reaction_type) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/comment/reactions`;
+  const body = { thread_id, reaction_type };
+  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
+  return response;
+};
+
+// "GET" Reactions
+const fetchReactions = async (API_URL, headers, message_id, limit) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/message/reactions/?message_id=${message_id}&limit=${limit}`;
+  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
   return response;
 };
 
@@ -114,18 +133,22 @@ const fetchReactions = async (API_URL, headers, id) => {
 // Searches
 
 // "GET" Hashtag
-const fetchHashtagSearch = async (API_URL, headers, hashtag) => {
-  const url = `${API_URL}/search/hashtag`;
-  const body = { text: hashtag, limit: 10 };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+const fetchHashtagSearch = async (API_URL, headers, text, limit) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/search/hashtag/?text=${text}&limit=${limit}`;
+  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
   return response;
 };
 
 // "GET" Username
-const fetchUsernameSearch = async (API_URL, headers, username) => {
-  const url = `${API_URL}/search/username`;
-  const body = { username: username, limit: 10 };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+const fetchUsernameSearch = async (API_URL, headers, username, limit) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/search/hashtag/?username=${username}&limit=${limit}`;
+  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
   return response;
 };
 
@@ -133,18 +156,24 @@ const fetchUsernameSearch = async (API_URL, headers, username) => {
 // Users
 
 // PATCH User
-const patchUsername = async (API_URL, headers, user_id, first_name, last_name, mail, username, password) => {
-  const url = `${API_URL}/user`;
-  const body = { user_id, first_name, last_name, mail, username, password };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+const patchUsername = async (API_URL, headers, email, password) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/user/`;
+  const body = { email, password };
+  const response = await fetch(url, { method: 'PATCH', headers, body }).then(data => data.json());
   return response;
 };
 
 // DELETE User
-const deleteUser = async (API_URL, headers, id) => {
-  const url = `${API_URL}/user/${id}`;
-  // const body = { text: new_text };
-  const response = await fetch(url, { headers }).then(data => data.json().then(json => json));
+const deleteUser = async (API_URL, headers, user_id) => {
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/user/`;
+  const body = { user_id };
+  const response = await fetch(url, { method: 'DELETE', headers, body }).then(data => data.json());
   return response;
 };
 
@@ -153,25 +182,34 @@ const deleteUser = async (API_URL, headers, id) => {
 
 // Create group
 const createGroup = async (API_URL, headers, name, description) => {
-  const url = `${API_URL}/group/new`;
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/group/`;
   const body = { name, description };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;
 };
 
 // Add member to group
 const addMember = async (API_URL, headers, id_group, user_id) => {
-  const url = `${API_URL}/group/add/member`;
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/group/member/`;
   const body = { id_group, user_id };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;
 };
 
 // Remove member from group
 const removeMember = async (API_URL, headers, id_group, user_id) => {
-  const url = `${API_URL}/group/delete/member`;
+  if (!headers) {
+    return "You aren't logged in";
+  }
+  const url = `${API_URL}/group/member`;
   const body = { id_group, user_id };
-  const response = await fetch(url, { headers, body }).then(data => data.json().then(json => json));
+  const response = await fetch(url, { method: 'DELETE', headers, body }).then(data => data.json());
   return response;
 };
 
@@ -180,13 +218,13 @@ module.exports = {
   signUpAPI,
   loginAPI,
   fetchMessage,
-  fetchMessagesGroup,
+  fetchGroup,
   postMessageGroup,
   postCommentMessage,
   patchMessage,
   deleteMessage,
-  postLike,
-  postDislike,
+  postMessageReaction,
+  postCommentReaction,
   fetchReactions,
   fetchHashtagSearch,
   fetchUsernameSearch,
@@ -195,5 +233,4 @@ module.exports = {
   createGroup,
   addMember,
   removeMember,
-
 };

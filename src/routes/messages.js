@@ -60,13 +60,11 @@ router.post('messages-add-dislike', '/:id', async (ctx) => {
 
 router.get('messages-reactions', '/:id', async (ctx) => {
   const { message } = ctx.state;
-  const reactions = await queryEngine.fetchReactions(API_URL, headers, id);
+  const { headers } = ctx.state;
+  const reactions = await queryEngine.fetchReactions(API_URL, headers, message.id);
   await ctx.render('messages/show-reactions', {
     reactions,
   });
 });
-<<<<<<< HEAD
 
-=======
->>>>>>> ec08d5a8fb12b57d5d6105a6b52513d9cce4e924
 module.exports = router;

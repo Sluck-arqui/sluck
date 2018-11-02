@@ -19,8 +19,11 @@ router.put('session-create', '/', async (ctx) => {
   const user = response.user;
   if (response.status_code === 201) {
 
-    // AQUI FALTA CONECTAR CON LA BASE DE DATOS
-
+    const userkey = await ctx.orm.UserKey.build({
+      'userId': user.id,
+      'token': user.oauth_token,
+    })
+    await userkey.save();
     ctx.session.currentUserId = user.id;
     ctx.flashMessage.notice = 'Inicio de sesión exitoso';
     ctx.redirect('/');
@@ -33,10 +36,9 @@ router.put('session-create', '/', async (ctx) => {
 });
 
 router.delete('session-destroy', '/', async (ctx) => {
+  ctx.orm.UserKey.findOne( { where: { 'userId': ctx.session.currentUserId } }
+  ).then(userkey => await userkey.destroy());
   delete ctx.session.currentUserId;
-
-  // AQUI FALTA ELIMINAR DE LA BASE DE DATOS
-
   ctx.flashMessage.notice = 'Término de sesión exitoso';
   ctx.redirect('/');
 });

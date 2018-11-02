@@ -1,8 +1,8 @@
 {
-  "name": "template",
+  "name": "sluck",
   "version": "1.0.1",
   "main": "index.js",
-  "repository": "https://github.com/IIC2513-2018-1/template.git",
+  "repository": "",
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
@@ -60,8 +60,7 @@
     "sequelize": "^4.37.4",
     "sequelize-cli": "https://github.com/IIC2513-2018-1/sequelize-cli#iic2513-version",
     "style-loader": "^0.20.3",
-    "webpack": "^3.6.0",
-    "node-fetch": "^2.2.0"
+    "webpack": "^3.6.0"
   },
   "engines": {
     "node": "^8.9.0",

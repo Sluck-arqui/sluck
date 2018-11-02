@@ -18,6 +18,9 @@ router.put('session-create', '/', async (ctx) => {
   const response = await queryEngine.loginAPI(API_URL, username, password);
   const user = response.user;
   if (response.status_code === 201) {
+
+    // AQUI FALTA CONECTAR CON LA BASE DE DATOS
+
     ctx.session.currentUserId = user.id;
     ctx.flashMessage.notice = 'Inicio de sesión exitoso';
     ctx.redirect('/');
@@ -31,6 +34,9 @@ router.put('session-create', '/', async (ctx) => {
 
 router.delete('session-destroy', '/', async (ctx) => {
   delete ctx.session.currentUserId;
+
+  // AQUI FALTA ELIMINAR DE LA BASE DE DATOS
+
   ctx.flashMessage.notice = 'Término de sesión exitoso';
   ctx.redirect('/');
 });

@@ -1,12 +1,11 @@
 const config = {
   default: {
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || 'vixolo',
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
     dialect: process.env.DB_DIALECT || 'postgres',
-    database: process.env.DB_NAME || 'sluck_dev',
-    host: process.env.DB_HOST || '127.0.0.1',
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST || 'charette10.ing.puc.cl',
     operatorsAliases: false,
-    // REAL host: 'charette10.ing.puc.cl'
   },
   development: {
     extend: 'default',

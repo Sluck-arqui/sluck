@@ -54,7 +54,7 @@
     "pg-hstore": "^2.3.2",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.6.0",
     "react-hot-loader": "^4.0.0",
     "sass-loader": "^6.0.7",
     "sequelize": "^4.37.4",

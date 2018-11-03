@@ -74,7 +74,6 @@ app.use((ctx, next) => {
   return next();
 });
 
-// Configure EJS views
 render(app, {
   root: path.join(__dirname, 'views'),
   viewExt: 'html.ejs',

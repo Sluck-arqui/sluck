@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../styles/chat.scss';
 import List from './list';
-import fetchGroup from '../../../lib/queryEngine';
+import { queryEngine } from '../../../lib/queryEngine';
 
 const API_URL = 'http://charette11.ing.puc.cl';
 
@@ -18,7 +18,7 @@ export default class Chat extends Component {
   }
 
   async getMessagesGroup(groupId) {
-    const messages = await fetchGroup(API_URL, ctx.session.headers, groupId);
+    const messages = await queryEngine.fetchGroup(API_URL, ctx.session.headers, groupId);
     this.setState({ chat: messages })
   }
 

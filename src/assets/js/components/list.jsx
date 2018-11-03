@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../styles/list.scss';
-//import { queryEngine } from '../../../lib/queryEngine.js';
+import { queryEngine } from '../../../lib/queryEngine.js';
 
 const API_URL = 'http://charette11.ing.puc.cl';
 
@@ -14,6 +14,11 @@ export default class List extends Component {
 
   handleChange(event) {
     this.setState({ filterText: event.target.value });
+  }
+
+  async searchResults() {
+    const searchResults = await queryEngine.fetchUsernameSearch(API_URL, )
+    this.setState({ results: })
   }
 
   showChats() {

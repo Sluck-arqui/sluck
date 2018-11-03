@@ -10,11 +10,12 @@ const API_URL = 'http://charette11.ing.puc.cl';
 router.get('/', async (ctx) => {
   // const headers = await queryEngine.signUpAPI(API_URL, "aa", "AA", "BB", "aa@bb.com", "some_password");
 
-  const headers = await queryEngine.loginAPI(API_URL, "aa", "some_password");
+  //const headers = await queryEngine.loginAPI(API_URL, "aa", "some_password");
   ctx.session.headers = headers;
 
   // console.log(headers);
   await ctx.render('index', {
+    ctx,
     appVersion: pkg.version,
   });
 });

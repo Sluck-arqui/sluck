@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../styles/chat.scss';
 import List from './list';
-//import { queryEngine } from '../../../lib/queryEngine.js';
+import fetchGroup from '../../../lib/queryEngine';
 
 const API_URL = 'http://charette11.ing.puc.cl';
 
@@ -17,11 +17,10 @@ export default class Chat extends Component {
     this.setState({ chatName: newChat });
   }
 
-  //async getMessagesGroup(groupName) {
-    //messages = await fetchGroup();
-
-    //this.setState({ chat: })
-  //}
+  async getMessagesGroup(groupId) {
+    const messages = await fetchGroup(API_URL, ctx.session.headers, groupId);
+    this.setState({ chat: messages })
+  }
 
   //async getMes
 
@@ -34,6 +33,7 @@ export default class Chat extends Component {
   }
 
   render() {
+    //console.log(app)
     return (
       <div>
         <List />

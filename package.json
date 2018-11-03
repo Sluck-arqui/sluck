@@ -1,8 +1,8 @@
 {
-  "name": "template",
+  "name": "sluck",
   "version": "1.0.1",
   "main": "index.js",
-  "repository": "https://github.com/IIC2513-2018-1/template.git",
+  "repository": "",
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
@@ -22,9 +22,11 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "koa-webpack": "^1.0.0",
-    "nodemon": "^1.17.2"
+    "nodemon": "^1.17.2",
+    "node-fetch": "^2.2.0"
   },
   "dependencies": {
+    "ajv": "^6.5.4",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -45,6 +47,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.8.1",
     "koa-static": "^4.0.2",
+    "node-fetch": "^2.2.0",
     "node-sass": "^4.8.3",
     "nodemailer": "^4.6.3",
     "pg": "^7.4.1",

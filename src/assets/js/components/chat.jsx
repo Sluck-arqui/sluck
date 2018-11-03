@@ -39,6 +39,7 @@ export default class Chat extends Component {
         <List />
         <div className="chatWindow">
           <p className="chatName">{this.state.chatName}</p>
+          <div className="chatContent" />
           <div>
             <textarea placeholder="Type a message here..." onChange={this.handleChange} />
             <button onClick={this.handleSubmit}>SEND</button>

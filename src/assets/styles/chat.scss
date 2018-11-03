@@ -6,6 +6,11 @@ div .chatWindow {
   flex-direction: column;
 }
 
+div .chatContent {
+  width: 700px;
+  height: 400px;
+}
+
 .chatName {
   font-size: 200%;
   font-weight: bold;

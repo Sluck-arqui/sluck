@@ -16,10 +16,10 @@ export default class List extends Component {
     this.setState({ filterText: event.target.value });
   }
 
-  async searchResults() {
-    const searchResults = await queryEngine.fetchUsernameSearch(API_URL, )
-    this.setState({ results: })
-  }
+  // async searchResults() {
+  //   const searchResults = await queryEngine.fetchUsernameSearch(API_URL, )
+  //   this.setState({ results: })
+  // }
 
   showChats() {
     if (this.state.filterText) {

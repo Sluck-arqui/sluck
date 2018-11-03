@@ -20,7 +20,6 @@ router.put('session-create-login', '/login', async (ctx) => {
   const response = await queryEngine.loginAPI(API_URL, username, password);
   const user = response.user;
   if (response.status_code === 201) {
-
     const userkey = await ctx.orm.UserKey.build({
       'userId': user.id,
       'token': user.oauth_token,

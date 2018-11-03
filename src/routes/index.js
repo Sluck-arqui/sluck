@@ -1,7 +1,5 @@
 const KoaRouter = require('koa-router');
-const pkg = require('../../package.json');
 const queryEngine  = require('../lib/queryEngine.js');
-
 
 const router = new KoaRouter();
 

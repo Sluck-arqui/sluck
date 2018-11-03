@@ -7,7 +7,7 @@ const { queryEngine } = require('../lib/queryEngine.js');
 
 router.get('session-new', '/', async (ctx) => {
   console.log("Entramos al primer middleware. Ahora rendereamos.");
-  ctx.render('session/new',
+  await ctx.render('session/new',
             {
               msg: '',
               submitLoginPath: ctx.router.url('session-create-login'),

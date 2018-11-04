@@ -22,31 +22,36 @@
   </form>
 </div>
 
+<br>
+<div class="form_container"> 
+    <h2>SignUp</h2>
 
-<div>
-  <form action="<%= submitSignupPath %>" method="post">
-    <label for="username">
-      <span>username</span>
-      <input type="text" name="username" id="username" />
-    </label>
-    <label for="first_name">
-      <span>name</span>
-      <input type="text" name="first_name" id="first_name" />
-    </label>
-    <label for="last_name">
-      <span>last name</span>
-      <input type="text" name="last_name" id="last_name" />
-    </label>
-    <label for="email">
-      <span>email</span>
-      <input type="email" name="email" id="email" />
-    </label>
-      <label for="password">
-        <span>password</span>
-        <input type="password" name="password" id="password" />
-      </label>
-    <div class="actions">
-      <input type="submit" value="Register" />
+    <form action="<%= submitSignupPath %>" enctype="multipart/form-data" method="post">
+    <div class="imgcontainer">
+        <img src="/assets/login.png" width="130" height="130">
     </div>
-  </form>
+
+    <div class="container_login">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
+
+        <label for="fname"><b>Firstname</b></label>
+        <input type="text" placeholder="Enter Firstname" name="first_name" required>
+
+        <label for="lname"><b>Lastname></b></label>
+        <input type="text" placeholder="Enter Lasttname" name="last_name" required>
+
+        <label for="mail"><b>Email</b></label>
+        <input type="text" placeholder="Enter Email" name="email" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+      
+        <button type="submit" >SignUp</button>
+        <br>
+
+        <br>
+        <br>
+    </div>
+    </form>
 </div>

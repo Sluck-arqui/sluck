@@ -37,7 +37,7 @@ router.put('session-create', '/', async (ctx) => {
 
 router.delete('session-destroy', '/', async (ctx) => {
   ctx.orm.UserKey.findOne( { where: { 'userId': ctx.session.currentUserId } }
-  ).then(userkey => await userkey.destroy());
+  ).then(function(userkey){userkey.destroy()});
   delete ctx.session.currentUserId;
   ctx.flashMessage.notice = 'Término de sesión exitoso';
   ctx.redirect('/');

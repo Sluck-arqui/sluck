@@ -26,19 +26,19 @@ router.get('search-hashtag', '/:text', async (ctx) => {
   const { limit } = ctx.state;
   const search = await queryEngine.fetchHashtagSearch(API_URL, headers, text, limit);
   ctx.assert(search, 404);
-  await ctx.render('messages/show', {
+  await ctx.render('??', {
     search,
   });
 });
 
-router.get('search-hashtag', '/:text', async (ctx) => {
+router.get('search-hashtag', '/username/:text', async (ctx) => {
   const { headers } = ctx.session;
   const { text } = ctx.state;
   const { limit } = ctx.state;
   // En vez de text debería llamarse username, pero no tiene tanto sentido crear otro middleware
   const search = await queryEngine.fetchUsernameSearch(API_URL, headers, text, limit);
   ctx.assert(search, 404);
-  await ctx.render('messages/show', {
+  await ctx.render('??', {
     search,
   });
 });

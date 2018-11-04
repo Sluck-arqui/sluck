@@ -17,14 +17,14 @@
 			<li><a id="logout" href="#" onclick="logout()">Logout</a></li>
 			<li class="Rnavbar">
 				<a style="float: right;">
-					<form action="<%= destroySessionPath %>" method="post">
+					<form action="/session" method="post">
 						<input type="hidden" name="_method" value="delete" />
 						<input id="salir" type="submit" value="Salir" />
 					</form>
 				</a>
 			</li>
 			<li class="Rnavbar" id="myaccount"><a style="float: right;" href="/users/show">Mi cuenta</a></li>
-			<li class="Rnavbar"><a style ="float: right;">Saludos <%= currentUser.username %>!</a></li>
+			<li class="Rnavbar"><a style ="float: right;">Saludos usuario!</a></li>
         </ul>
       </nav>
      </div>

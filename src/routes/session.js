@@ -30,9 +30,14 @@ router.post('session-create', '/', async (ctx) => {
       ctx.session.currentUserId = user.id;
       ctx.flashMessage.notice = 'Inicio de sesión exitoso';
       console.log('[i] User logged in');
-      await ctx.redirect(ctx.router.url('main'));
+      console.log(ctx.router.url('index'));
+      await ctx.redirect(ctx.router.url('index')[0]);
     } catch (validationError) {
-      await ctx.redirect(ctx.router.url('main'));
+      ctx.session.currentUsername = user.username;
+      ctx.session.currentUserId = user.id;
+	console.log('[i] User logged in');
+      console.log(ctx.router.url('index'));
+      await ctx.redirect(ctx.router.url('index')[0]);
     }
   } else {
     ctx.flashMessage.notice = 'Error en las credenciales de inicio';
@@ -57,7 +62,7 @@ router.post('session-signup', '/signup', async (ctx) => {
 });
 
 router.delete('session-destroy', '/', async (ctx) => {
-  ctx.orm.UserKey.findOne( { where: { 'userId': ctx.session.currentUserId } }
+  ctx.orm.userKey.findOne( { where: { 'userId': ctx.session.currentUserId } }
   ).then(function(userkey){userkey.destroy()});
   delete ctx.session.currentUserId;
   ctx.flashMessage.notice = 'Término de sesión exitoso';

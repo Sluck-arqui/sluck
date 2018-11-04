@@ -49,7 +49,7 @@ router.post('session-signup', '/signup', async (ctx) => {
     } else {
       ctx.flashMessage.notice = "Su cuenta no pudo ser creada";
     }
-  } catch {
+  } catch (e) {
     let a = 0;
   }
   await ctx.redirect(ctx.router.url('session-new'));

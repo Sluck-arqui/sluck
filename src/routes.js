@@ -9,6 +9,14 @@ const session = require('./routes/session');
 
 const router = new KoaRouter();
 
+router.use(async (ctx, next) => {
+  Object.assign(ctx.state, {
+    currentUser: ctx.session.userId && await ctx.orm.userKey.findAll({ where: { userId: ctx.session.userId } }),
+    destroySessionPath: ctx.router.url('session-destroy'),
+  });
+  return next();
+});
+
 router.use('/', main.routes());
 router.use('/messages', messages.routes());
 router.use('/groups', groups.routes());

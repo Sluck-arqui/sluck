@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import Chat from './components/chat';
 
 const reactAppContainer = document.getElementById('react-app');
 
@@ -12,5 +12,5 @@ if (reactAppContainer) {
     );
   };
 
-  render(App);
+  render(Chat);
 }

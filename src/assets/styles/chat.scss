@@ -1,0 +1,30 @@
+div {
+  display: flex;
+}
+
+div .chatWindow {
+  flex-direction: column;
+}
+
+div .chatContent {
+  width: 700px;
+  height: 400px;
+}
+
+.chatName {
+  font-size: 200%;
+  font-weight: bold;
+}
+
+button {
+  padding: 1% 3%;
+  margin: 30px;
+}
+
+textarea {
+  width: 700px;
+  font-size: 120%;
+  height: 80px;
+  padding: 10px;
+  resize: none;
+}

@@ -1,23 +1,28 @@
-<form >
-        <div class="container">
-          <h1>Registrarse</h1>
-          <hr>
-          <label for="username"><b>Email</b></label>
-          <input type="text" placeholder="Enter username" name="username" required>
+<div class="form_container"> 
+    <h2>Login Form</h2>
+
+    <form >
+    <div class="imgcontainer">
+        <img src="/assets/login.png" width="130" height="130">
+    </div>
+
+    <div class="container_login">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+            
+        <button type="submit" >Login</button>
+        <br>
+        <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+        <br>
+        <br>
+    </div>
+
+    <span class="psw">Forgot <a href="#">password?</a></span>
     
-          <label for="email"><b>Email</b></label>
-          <input type="text" placeholder="Enter Email" name="email" required>
-      
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" required>
-      
-          <label for="psw-repeat"><b>Repeat Password</b></label>
-          <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-      
-       
-          <div class="clearfix">
-            <button type="submit" class="signupbtn">Sign Up</button>
-            <button type="button" class="cancelbtn">Cancel</button>
-          </div>
-        </div>
-      </form>
+    </form>
+</div>

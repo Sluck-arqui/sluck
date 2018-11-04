@@ -1,33 +1,28 @@
 <br>
 <br>
-<p class="big-title black">REGISTRARSE</p>
-<br>
+<div class="form_container"> 
+    <h2>SingUp</h2>
 
-<div class="container form">
-  <form id="signup-form" action="/users" enctype="multipart/form-data" method="post">
-    <% if (notice) { %>
-    <p><%= notice %></p>
-    <% } %>
-    <p class="dividing header">Nombre Usuario</p>
-    <input class="input-form" type="text" id="user" name='userName' placeholder="Usuario">
-
-    <p class="dividing header">Contraseña </p>
-    <input class="input-form" type="password" id="password" name="password" placeholder="Contraseña">
-
-    <p class="dividing header">Email</p>
-    <input class="input-form" type="email" id="email" name="email" placeholder="Email">
-
-    <br>
-    <br>
-    <div class="error-message" id="error">
-      <p id="user-error"></p>
-      <p id="password-error"></p>
-      <p id="email-error"></p>
+    <form >
+    <div class="imgcontainer">
+        <img src="/assets/login.png" width="130" height="130">
     </div>
-    <br>
-    <div class="boxes">
-      <input class="submit-form" type="submit" value="Crear Usuario">
+
+    <div class="container_login">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <label for="psw"><b>Repeat Password</b></label>
+        <input type="password" placeholder="Repeat Password" name="r_psw" required>
+            
+        <button type="submit" >SignUp</button>
+        <br>
+
+        <br>
+        <br>
     </div>
-  </form>
-  <br>
+    </form>
 </div>

@@ -14,8 +14,8 @@ router.get('main','/', async (ctx) => {
     console.log("logged user");
     await ctx.render('index',
 	{
-		destroySessionPath: ctx.router.url('session-destroy');
-		currentUser: ctx.session.currentUsername.
+		destroySessionPath: ctx.router.url('session-destroy'),
+		currentUser: ctx.session.currentUsername,
 	}
     );
   }

@@ -15,10 +15,8 @@ const signUpAPI = async (API_URL, username, first_name, last_name, email, passwo
     password,
   };
   body = JSON.stringify(body);
-  console.log(body);
   const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
-  console.log(response);
-  return { 'Oauth-Token': response.user.oauth_token };
+  return response; //{ 'Oauth-Token': response.user.oauth_token };
 };
 
 const loginAPI = async (API_URL, username, password) => {
@@ -26,7 +24,7 @@ const loginAPI = async (API_URL, username, password) => {
   let body = { username, password };
   body = JSON.stringify(body);
   const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
-  return { 'Oauth-Token': response.user.oauth_token };
+  return response; //{ 'Oauth-Token': response.user.oauth_token };
 };
 
 // Messages

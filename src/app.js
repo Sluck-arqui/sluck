@@ -24,7 +24,6 @@ app.keys = [
 
 // expose ORM through context's prototype
 app.context.orm = orm;
-
 /**
  * Middlewares
  */

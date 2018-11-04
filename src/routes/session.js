@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const KoaRouter = require('koa-router');
 const router = new KoaRouter();
 const queryEngine = require('../lib/queryEngine.js');
@@ -5,7 +6,6 @@ const queryEngine = require('../lib/queryEngine.js');
 const API_URL = 'http://charette11.ing.puc.cl';
 
 router.get('session-new', '/', async (ctx) => {
-  console.log("before");
   await ctx.render('session/new',
             {
               notice: ctx.flashMessage.notice,
@@ -18,15 +18,21 @@ router.post('session-create', '/', async (ctx) => {
   const { username, password } = ctx.request.body;
   const response = await queryEngine.loginAPI(API_URL, username, password);
   const user = response.user;
+  console.log(response);
   if (response.status_code === 201) {
-    const userkey = await ctx.orm.UserKey.build({
-      'userId': user.id,
-      'token': user.oauth_token,
-    })
-    await userkey.save();
-    ctx.session.currentUserId = user.id;
-    ctx.flashMessage.notice = 'Inicio de sesión exitoso';
-    return ctx.redirect(ctx.router.url('main'));
+    try {
+      const userkey = await ctx.orm.userKey.build({
+        'userId': user.id,
+        'token': user.oauth_token,
+      })
+      await userkey.save();
+      ctx.session.currentUserId = user.id;
+      ctx.flashMessage.notice = 'Inicio de sesión exitoso';
+      console.log('[i] User logged in');
+      await ctx.redirect(ctx.router.url('main'));
+    } catch (validationError) {
+      await ctx.redirect(ctx.router.url('main'));
+    }
   } else {
     ctx.flashMessage.notice = 'Error en las credenciales de inicio';
     await ctx.redirect(ctx.router.url('session-new'));
@@ -35,12 +41,16 @@ router.post('session-create', '/', async (ctx) => {
 
 router.post('session-signup', '/signup', async (ctx) => {
   const { username, first_name, last_name, email, password } = ctx.request.body;
-  const response = await queryEngine.signUpAPI(API_URL, username, first_name, last_name, email, password);
-
-  if (response.status_code === 201) {
-    ctx.flashMessage.notice = "Ahora puedes hcer login con tus datos";
-  } else {
-    ctx.flashMessage.notice = "Su cuenta no pudo ser creada";
+  try{
+    const response = await queryEngine.signUpAPI(API_URL, username, first_name, last_name, email, password);
+    console.log(response)
+    if (response.status_code === 201) {
+      ctx.flashMessage.notice = "Ahora puedes hcer login con tus datos";
+    } else {
+      ctx.flashMessage.notice = "Su cuenta no pudo ser creada";
+    }
+  } catch {
+    let a = 0;
   }
   await ctx.redirect(ctx.router.url('session-new'));
 });

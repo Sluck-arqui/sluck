@@ -8,10 +8,11 @@ const API_URL = 'http://charette11.ing.puc.cl';
 router.get('main','/', async (ctx) => {
   if (ctx.session.currentUserId === undefined) {
     ctx.flashMessage.notice = 'Debes hacer login o registrarte para entrar';
-    ctx.redirect(ctx.router.url('session-new'));
+    await ctx.redirect(ctx.router.url('session-new'));
   }
   else {
-    ctx.render('index');
+    console.log("logged user");
+    await ctx.render('index');
   }
 });
 

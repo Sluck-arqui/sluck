@@ -1,31 +1,23 @@
-<br>
-<br>
-<p class="big-title black">REGISTRARSE</p>
-<br>
-
-<div >
-    <form id="signup-form">
-
-    <p class="dividing header">Nombre Usuario</p>
-    <input class="input-form" type="text" id="user" name='userName' placeholder="Usuario">
-
-    <p class="dividing header">Contraseña </p>
-    <input class="input-form" type="password" id="password" name="password" placeholder="Contraseña">
-
-    <p class="dividing header">Email</p>
-    <input class="input-form" type="email" id="email" name="email" placeholder="Email">
-
-    <br>
-    <br>
-    <div class="error-message" id="error">
-        <p id="user-error"></p>
-        <p id="password-error"></p>
-        <p id="email-error"></p>
-    </div>
-    <br>
-    <div class="boxes">
-        <input class="submit-form" type="submit" value="Crear Usuario">
-    </div>
-    </form>
-    <br>
-</div>
+<form >
+        <div class="container">
+          <h1>Registrarse</h1>
+          <hr>
+          <label for="username"><b>Email</b></label>
+          <input type="text" placeholder="Enter username" name="username" required>
+    
+          <label for="email"><b>Email</b></label>
+          <input type="text" placeholder="Enter Email" name="email" required>
+      
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+      
+          <label for="psw-repeat"><b>Repeat Password</b></label>
+          <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+      
+       
+          <div class="clearfix">
+            <button type="submit" class="signupbtn">Sign Up</button>
+            <button type="button" class="cancelbtn">Cancel</button>
+          </div>
+        </div>
+      </form>

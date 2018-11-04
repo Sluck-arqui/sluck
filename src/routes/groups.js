@@ -1,5 +1,5 @@
 const KoaRouter = require('koa-router');
-const { queryEngine } = require('../lib/queryEngine.js');
+const queryEngine = require('../lib/queryEngine.js');
 
 
 const router = new KoaRouter();
@@ -8,16 +8,17 @@ const API_URL = 'http://charette11.ing.puc.cl'; // probablemente process.env.API
 
 router.param('id', async (id, ctx, next) => {
   const { headers } = ctx.session;
+  console.log(headers);
   const group = await queryEngine.fetchGroup(API_URL, headers, id);
   ctx.assert(group, 404);
-  ctx.state.messages = group;
+  ctx.state.group = group;
   return next();
 });
 
 
 router.get('messages-group-show', '/:id', async (ctx) => {
   const { group } = ctx.state;
-
+  console.log(group);
   await ctx.render('??', {
     group,
     // esta url se pasa para después crear form para agregar comentario
@@ -27,7 +28,7 @@ router.get('messages-group-show', '/:id', async (ctx) => {
 
 router.post('messages-group-add', '/message/:id', async (ctx) => {
   const { group } = ctx.state;
-  const { headers } = ctx.session;
+  const { headers } = ctx.state;
   const { text } = ctx.request.body;
   // esto supone que se mandó por el post un field text
   await queryEngine.postMessageGroup(API_URL, headers, group.id, text);
@@ -46,7 +47,7 @@ router.post('create-group', '/', async (ctx) => {
 router.post('add-member-group', '/:id', async (ctx) => {
   const { user_id } = ctx.request.body;
   const { group } = ctx.state;
-  const { headers } = ctx.session;
+  const { headers } = ctx.state;
   // esto supone que se mandó por el post un field text
   await queryEngine.addMember(API_URL, headers, group.id, user_id);
   ctx.redirect('/');
@@ -55,7 +56,7 @@ router.post('add-member-group', '/:id', async (ctx) => {
 router.post('delete-member-group', '/:id', async (ctx) => {
   const { user_id } = ctx.request.body;
   const { group } = ctx.state;
-  const { headers } = ctx.session;
+  const { headers } = ctx.state;
   // esto supone que se mandó por el post un field text
   await queryEngine.removeMember(API_URL, headers, group.id, user_id);
   ctx.redirect('/');

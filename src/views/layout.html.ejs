@@ -3,11 +3,33 @@
 
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sluck</title>
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
   </head>
+  <header>
+     <div class= "topnav">
+      <nav>
+        <ul>
+			<li class="Lnavbar"><a href="/">Inicio</a></li>
+			<li><a id="logout" href="#" onclick="logout()">Logout</a></li>
+			<li class="Rnavbar">
+				<a style="float: right;">
+					<form action="<%= destroySessionPath %>" method="post">
+						<input type="hidden" name="_method" value="delete" />
+						<input id="salir" type="submit" value="Salir" />
+					</form>
+				</a>
+			</li>
+			<li class="Rnavbar" id="myaccount"><a style="float: right;" href="/users/show">Mi cuenta</a></li>
+			<li class="Rnavbar"><a style ="float: right;">Saludos <%= currentUser.username %>!</a></li>
+        </ul>
+      </nav>
+     </div>
+
+    </header>
   <body>
     <nav>
     </nav>

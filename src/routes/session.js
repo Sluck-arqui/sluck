@@ -26,6 +26,7 @@ router.post('session-create', '/', async (ctx) => {
         'token': user.oauth_token,
       })
       await userkey.save();
+      ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
       ctx.flashMessage.notice = 'Inicio de sesión exitoso';
       console.log('[i] User logged in');

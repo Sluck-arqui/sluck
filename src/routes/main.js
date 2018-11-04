@@ -12,7 +12,12 @@ router.get('main','/', async (ctx) => {
   }
   else {
     console.log("logged user");
-    await ctx.render('index');
+    await ctx.render('index',
+	{
+		destroySessionPath: ctx.router.url('session-destroy');
+		currentUser: ctx.session.currentUsername.
+	}
+    );
   }
 });
 

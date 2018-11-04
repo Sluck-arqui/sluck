@@ -1,0 +1,52 @@
+<h1>
+  Bienvenido a Sluck!
+</h1>
+<h2>
+  Para hacer uso de sluck, debes iniciar sesion o registrarte
+</h2>
+  <div>
+
+<%= notice%>
+<form class="single-form" action="<%= submitLoginPath %>" method="post">
+    <label for="username">
+      <span>username</span>
+      <input type="text" name="username" id="username" value="<%= locals.username %>" />
+    </label>
+    <label for="password">
+      <span>password</span>
+      <input type="password" name="password" id="password" />
+    </label>
+    <div class="actions">
+      <input type="submit" value="Inicia sesión" />
+    </div>
+  </form>
+</div>
+
+
+<div>
+  <form action="<%= submitSignupPath %>" method="post">
+    <label for="username">
+      <span>username</span>
+      <input type="text" name="username" id="username" />
+    </label>
+    <label for="first_name">
+      <span>name</span>
+      <input type="text" name="first_name" id="first_name" />
+    </label>
+    <label for="last_name">
+      <span>last name</span>
+      <input type="text" name="last_name" id="last_name" />
+    </label>
+    <label for="email">
+      <span>email</span>
+      <input type="email" name="email" id="email" />
+    </label>
+      <label for="password">
+        <span>password</span>
+        <input type="password" name="password" id="password" />
+      </label>
+    <div class="actions">
+      <input type="submit" value="Register" />
+    </div>
+  </form>
+</div>

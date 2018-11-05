@@ -21,7 +21,7 @@ router.get('messages-show', '/:id', async (ctx) => {
   await ctx.render('??', {
     message,
     // esta url se pasa para después crear form para agregar comentario
-    addCommentPath: ctx.router.url('messages-add-comment', message.id),
+    addCommentPath: ctx.router.url('messages-add-comment', ctx.params.id),
   });
 });
 

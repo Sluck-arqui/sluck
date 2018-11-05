@@ -1,0 +1,21 @@
+Nombre
+<br>
+<%= group.name%>
+<br>
+Miembros
+<br>
+
+<% group.members.forEach((member) => { %>
+    <%= member.username%>
+<%});%>
+
+<% messages.forEach((message) => { %>
+    <div class="msg">
+	Usuario <%=message.author%> escribio: <%= message.text %>
+    </div>
+<% }); %>
+
+
+<form method="POST" action="#" >
+<input type="text" placeholder="Escribe un mensaje" name="message"/><button value="enviar">
+</form>

@@ -4,41 +4,81 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Sluck</title>
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
     <style>
-	<!-- El estilo va aquiiiii-->
+	* {
+      font-family: 'Montserrat', sans-serif;
+    }
+    html {
+      margin-left: 5%;
+      margin-right: 5%;
+      align-self: center;
+      align-content: center;
+      justify-content: center;
+    } 
+    form {
+      display: flex;
+      flex-direction: column;
+      border: 2px solid grey;
+	padding: 5%;
+    }
+	nav {
+		display: flex;
+		justify-content: flex-end;
+	}
+    .single-form {
+	border-style: none;
+    }
+
+    input {
+        margin: 5px;
+    }
+    body{
+    width: 100%;
+    background-color: #E6EBE0;
+    }
+    #title{
+	padding: 10px 10px 10px 100px;
+	text-align: left;
+        font-weight: bold;
+        font-size: 50px;
+	width: 500px;
+        background-color: #9BC1BC;
+        border: solid #9BC1BC 3px;
+        border-radius: 20px;
+	}
+    
+#mainBar{
+  float: left;
+  width: 29%;
+}
+#mainFrame{
+  float: right;
+  width: 70%;
+  height: 1000px;
+}
+
     </style>
   </head>
-  <header>
-     <div class= "topnav">
-      <nav>
-        <ul>
-			<li class="Lnavbar"><a href="/">Inicio</a></li>
-			<li><a id="logout" href="#" onclick="logout()">Logout</a></li>
-			<li class="Rnavbar">
-				<a style="float: right;">
-					<form action="/session" method="post">
-						<input type="hidden" name="_method" value="delete" />
-						<input id="salir" type="submit" value="Salir" />
-					</form>
-				</a>
-			</li>
-			<li class="Rnavbar" id="myaccount"><a style="float: right;" href="/users/show">Mi cuenta</a></li>
-			<li class="Rnavbar"><a style ="float: right;">Saludos usuario!</a></li>
-        </ul>
-      </nav>
-     </div>
-
-    </header>
   <body>
-    <nav>
-    </nav>
+  <div id="title">Sluck!</div>
+	<% if (currentUser) { %>
+	<nav>
+		<a href="<%= destroySessionPath %>">Salir</a>
+	</nav>
+	<% } %>
     <%- body %>
-    <!--<script src="/assets/app.js"></script>>
-    <!--<script src="/assets/appReact.js"></script>>
+    <!--<script src="/assets/app.js"></script>-->
+    <!--<script src="/assets/appReact.js"></script>-->
   </body>
-
+  <script>
+	function changeSrc(loc){
+		document.getElementById('mainFrame').src = loc;
+	}
+  </script>
 </html>

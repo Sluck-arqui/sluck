@@ -50,8 +50,9 @@ router.post('session-create', '/', async (ctx) => {
 router.post('session-signup', '/signup', async (ctx) => {
   const { username, first_name, last_name, email, password } = ctx.request.body;
   try{
+    console.log(username);
     const response = await queryEngine.signUpAPI(API_URL, username, first_name, last_name, email, password);
-    console.log(response)
+    console.log(response);
     if (response.status_code === 201) {
       ctx.flashMessage.notice = "Ahora puedes hcer login con tus datos";
     } else {

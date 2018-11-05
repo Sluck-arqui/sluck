@@ -1,33 +1,28 @@
 <div id="react-app"></div>
-
-<style>
-#mainBar{
-  float: left;
-  width: 29%;
-}
-#groupView{
-  float: right;
-  width: 70%;
-  height: 100%;
-}
-
-</style>
-
-
-
 <div id="mainBar">
   <div>
-    Search groups
+  <form method="GET" action="<%//=searchGroupPath%>">
+	Search for groups here
+	<input style="width: 90%;" type="text" placeholder="Search here!"></input><input style="float:right; width: 90%" type="submit" value="go!"></input>
+  </form>
+  <br>
+	Pertenezco a <%= groups.length %> grupos
+	<br>
+	<% groups.forEach( (group) => { %>		
+		<br>
+		<input type="button" onClick="changeSrc('/groups/<%= group.id %>')" value="<%= group.name%>"/>
+        <% });%>
+	<br>
+      <input type="button" onclick="changeSrc('/groups/new')" value="Create one" /> 
     <br>
-    Search Hashtags
+      <a>Search Hashtags</a>
   </div>
   <div>
-    Groups
   </div>
   <div>
-    People
+    My People
   </div>
 </div>
-<iframe id="groupView">
+<iframe id="mainFrame">
 </iframe>
-
+</form>

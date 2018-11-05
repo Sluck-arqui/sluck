@@ -44,28 +44,21 @@ router.get('group-show', '/:id', async (ctx) => {
     const aux = await queryEngine.fetchMessage(API_URL, headers, ask);
     messages.push(aux);
   }
-
-//group.messages.forEach((message) => {
-  // const aux = queryEngine.fetchMessage(API_URL, headers, message.id);
-//	message.push(aux);
-// });
   await ctx.render('groups/view', {
     layout: false,
     group,
     messages,
-    // esta url se pasa para después crear form para agregar comentario
-    addCommentPath: message => ctx.router.url('messages-add-comment', message.id),
-    addMessageGroupPath: ctx.router.url('messages-group-add'), 
-});
+    submitMessagePath: ctx.router.url('messages-group-add',{"id":ctx.params.id}),
+  });
 });
 
 router.post('messages-group-add', '/message/:id', async (ctx) => {
-  const { group } = ctx.state;
-  const { headers } = ctx.state;
-  const { text } = ctx.request.body;
+  const {group_id} = ctx.params.id;
+  const headers = {"Oauth-token":ctx.session.currentToken};
+  const {text} = ctx.request.body.message;
   // esto supone que se mandó por el post un field text
-  await queryEngine.postMessageGroup(API_URL, headers, group.id, text);
-  ctx.redirect('/');
+  await queryEngine.postMessageGroup(API_URL, headers, ctx.params.id, ctx.request.body.message);
+  ctx.redirect(ctx.router.url('group-show',{"id":ctx.params.id}));
 });
 
 router.post('add-member-group', '/:id', async (ctx) => {

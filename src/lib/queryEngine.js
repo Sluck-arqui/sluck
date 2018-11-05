@@ -57,7 +57,7 @@ const postMessageGroup = async (API_URL, headers, group_id, text) => {
     return "You aren't logged in";
   }
   const url = `${API_URL}/message/group/`;
-  let body = { group_id, text };
+  let body = { "group_id":group_id, "text":text };
   body = JSON.stringify(body);
   const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;

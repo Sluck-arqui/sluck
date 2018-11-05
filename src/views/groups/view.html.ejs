@@ -11,11 +11,11 @@ Miembros
 
 <% messages.forEach((message) => { %>
     <div class="msg">
-	Usuario <%=message.author%> escribio: <%= message.text %>
+	User <%=message.author%> wrote: <%= message.text %>
     </div>
 <% }); %>
 
 
-<form method="POST" action="#" >
-<input type="text" placeholder="Escribe un mensaje" name="message"/><button value="enviar">
+<form method="POST" action="<%=submitMessagePath%>" >
+   <input type="text" placeholder="Write a message!" name="message"/><input type="submit" value="Send">
 </form>

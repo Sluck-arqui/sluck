@@ -12,25 +12,25 @@ const API_URL = 'http://charette11.ing.puc.cl'; // probablemente process.env.API
 // });
 
 
-router.param('text', async (text, limit, ctx, next) => {
-  ctx.state.limit = limit;
-  ctx.state.text = text;
-  return next();
-});
+//router.param('text', async (text, limit, ctx, next) => {
+//  ctx.state.limit = limit;
+//  ctx.state.text = text;
+//  return next();
+//});
 
 
-router.get('search-hashtag', '/:text', async (ctx) => {
+router.get('show-hashtag', '/:text', async (ctx) => {
   const { headers } = ctx.session;
-  const { text } = ctx.state;
-  const { limit } = ctx.state;
+  const { text } = ctx.params;
+  const { limit } = 10;
   const search = await queryEngine.fetchHashtagSearch(API_URL, headers, text, limit);
   ctx.assert(search, 404);
-  await ctx.render('??', {
+  await ctx.render('search/show', {
     search,
   });
 });
 
-router.get('search-hashtag', '/username/:text', async (ctx) => {
+router.get('show-username', '/username/:text', async (ctx) => {
   const { headers } = ctx.session;
   const { text } = ctx.state;
   const { limit } = ctx.state;

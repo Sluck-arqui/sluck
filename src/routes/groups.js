@@ -30,6 +30,14 @@ router.post('create-group-submit', '/new', async (ctx) => {
   ctx.redirect(ctx.router.url('create-group'));
 });
 
+router.get('group-search', '/search/:name', async (ctx) => {
+	console.log(ctx.params.name);
+        await ctx.render('groups/index',{
+		layout:false,
+	});
+
+});
+
 router.get('group-show', '/:id', async (ctx) => {
   let result = await ctx.orm.userKey.findOne({ where: {userId: ctx.session.currentUserId.toString()}})
   let token = result.token
@@ -48,6 +56,7 @@ router.get('group-show', '/:id', async (ctx) => {
     layout: false,
     group,
     messages,
+    addMemberPath: ctx.router.url('add-member-group',{"id":ctx.params.id}),
     submitMessagePath: ctx.router.url('messages-group-add',{"id":ctx.params.id}),
   });
 });
@@ -62,12 +71,16 @@ router.post('messages-group-add', '/message/:id', async (ctx) => {
 });
 
 router.post('add-member-group', '/:id', async (ctx) => {
-  const { user_id } = ctx.request.body;
-  const { group } = ctx.state;
+ try {
+ const { user_id } = ctx.request.body.user_id;
+  const { group } = crx.params.id;
   const { headers } = ctx.state;
   // esto supone que se mandó por el post un field text
   await queryEngine.addMember(API_URL, headers, group.id, user_id);
-  ctx.redirect('/');
+  } catch (e) {
+	//nada
+}
+ctx.redirect('/');
 });
 
 router.post('delete-member-group', '/:id', async (ctx) => {

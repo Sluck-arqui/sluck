@@ -1,14 +1,19 @@
-Nombre
+Name
 <br>
 <%= group.name%>
 <br>
-Miembros
+Add someone! <form method="POST" action="<%=addMemberPath%>" >
+   <input type="text" placeholder="Write his user ID here" name="message"/><input type="submit" value="Add">
+</form>
+
+Members
 <br>
 
 <% group.members.forEach((member) => { %>
-    <%= member.username%>
+    <%= member.id %> a.k.a. <%= member.username%> <br>
 <%});%>
-
+<br>
+<br>
 <% messages.forEach((message) => { %>
     <div class="msg">
 	User <%=message.author%> wrote: <%= message.text %>

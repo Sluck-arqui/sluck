@@ -3,7 +3,8 @@
   <div>
   <form method="GET" action="<%//=searchGroupPath%>">
 	Search for groups here
-	<input style="width: 90%;" type="text" placeholder="Search here!"></input><input style="float:right; width: 90%" type="submit" value="go!"></input>
+	<input style="width: 90%;" type="text" id="searchMe" placeholder="Search here!"></input>
+	<input type="button" style="float:right; width: 90%" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="go!"></input>
   </form>
   <br>
 	Pertenezco a <%= groups.length %> grupos
@@ -15,7 +16,11 @@
 	<br>
       <input type="button" onclick="changeSrc('/groups/new')" value="Create one" /> 
     <br>
-      <a>Search Hashtags</a>
+	<form action="/hashtags/" method="get">
+        <input type="text" name="text" placeholder="hashtag"/>
+        <input type="submit" value="Search"/>
+	</form>
+
   </div>
   <div>
   </div>

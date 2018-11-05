@@ -28,11 +28,13 @@ router.post('session-create', '/', async (ctx) => {
       await userkey.save();
       ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
+      ctx.session.currentToken = user.oauth_token; //test
       ctx.flashMessage.notice = 'Inicio de sesión exitoso';
       console.log('[i] User logged in');
       console.log(ctx.router.url('index'));
       await ctx.redirect(ctx.router.url('index')[0]);
     } catch (validationError) {
+      ctx.session.currentToken = user.oauth_token; //test
       ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
 	console.log('[i] User logged in');

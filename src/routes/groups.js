@@ -1,14 +1,14 @@
 const KoaRouter = require('koa-router');
 const queryEngine = require('../lib/queryEngine.js');
 
-
 const router = new KoaRouter();
 
 const API_URL = 'http://charette11.ing.puc.cl'; // probablemente process.env.API_URL
 
 router.param('id', async (id, ctx, next) => {
-  const { headers } = ctx.session;
-  console.log(headers);
+  let result = await ctx.orm.userKey.findOne({ where: {userId: ctx.session.currentUserId.toString()}})
+  let token = result.token
+  const headers = {"Oauth-token":token};
   const group = await queryEngine.fetchGroup(API_URL, headers, id);
   ctx.assert(group, 404);
   ctx.state.group = group;
@@ -18,8 +18,8 @@ router.param('id', async (id, ctx, next) => {
 
 router.get('messages-group-show', '/:id', async (ctx) => {
   const { group } = ctx.state;
-  console.log(group);
-  await ctx.render('??', {
+  await ctx.render('groups/view', {
+    layout:false,
     group,
     // esta url se pasa para después crear form para agregar comentario
     addCommentPath: message => ctx.router.url('messages-add-comment', message.id),

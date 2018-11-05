@@ -3,5 +3,17 @@ const db = require('./src/models');
 
 const PORT = process.env.PORT || 9999;
 
-app.listen(3000, '127.0.0.1');
+db.sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection to the database has been established successfully.');
+    app.listen(PORT, (err) => {
+      if (err) {
+        return console.error('Failed', err);
+      }
+      console.log(`Listening on port ${PORT}`);
+      return app;
+    });
+  })
+  .catch(err => console.error('Unable to connect to the database:', err));
 

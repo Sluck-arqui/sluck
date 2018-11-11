@@ -19,12 +19,14 @@ const API_URL = 'http://charette11.ing.puc.cl'; // probablemente process.env.API
 //});
 
 
-router.get('show-hashtag', '/:text', async (ctx) => {
-  const { headers } = ctx.session;
+router.get('new-hashtag-search', '/', async (ctx) => {
+  const headers = { 'OAuth-Token': ctx.session.currentToken };
+  // console.log('headers are', headers);
   const { text } = ctx.params;
   const { limit } = 10;
-  const search = await queryEngine.fetchHashtagSearch(API_URL, headers, text, limit);
+  let search = await queryEngine.fetchHashtagSearch(API_URL, headers, text, limit);
   ctx.assert(search, 404);
+  search = JSON.stringify(search);
   await ctx.render('search/show', {
     search,
   });

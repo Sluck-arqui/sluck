@@ -16,10 +16,15 @@
 	<br>
       <input type="button" onclick="changeSrc('/groups/new')" value="Create one" /> 
     <br>
-	<form action="<%= newHashtagSearch %>" method="get">
+	<form action="<%= newHashtagSearch %>" method="post">
         <input type="text" name="text" placeholder="hashtag"/>
         <input type="submit" value="Search"/>
-	</form>
+  </form>
+
+  <form action="<%= newUsernameSearch %>" method="post">
+    <input type="text" name="username" placeholder="username"/>
+    <input type="submit" value="Search"/>
+  </form>
 
   </div>
   <div>

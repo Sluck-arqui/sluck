@@ -15,8 +15,8 @@ router.use(async (ctx, next) => {
     destroySessionPath: ctx.router.url('session-destroy'),
     createGroupPath: ctx.router.url('create-group-submit'),
 //    addMessageGroupPath: ctx.router.url('messages-group-add'),
-	newHashtagSearch: ctx.router.url('new-hashtag-search'),
-//	postHashtagSearch: ctx.router.url('show-hashtag'),
+    newHashtagSearch: ctx.router.url('new-hashtag-search'),
+    newUsernameSearch: ctx.router.url('new-username-search'),
   });
   return next();
 });

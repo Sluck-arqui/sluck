@@ -32,10 +32,9 @@
           <br>
           <br>
           <label>
-          <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
+          
       </div>
-      
+      <span> <a href="session/signup"> Registrarme</a></span>
       <br>
       <br>
   </div>
@@ -43,47 +42,3 @@
 </div>
 
 
-
-
-
-<div class="form_container form_center"> 
-    <h2>Sign Up</h2>
-
-    <form action="<%= submitSignupPath %>" method="post">
-
-    <div class="form-group">
-        <div class="field">
-            <label for="username"><b>Nombre de usuario</b></label>
-            <input type="text" class="form-control" placeholder="la_juanita_sanchez" name="username" required>
-            <br>        
-        </div>
-        <div class="field">
-                <label for="first_name"><b>Nombre</b></label>
-                <input type="text" class="form-control" placeholder="Juanita" name="first_name" required>
-                <br>
-        </div>
-        <div class="field">
-                <label for="last_name"><b>Apellido</b></label>
-                <input type="text" class="form-control" placeholder="Sánchez" name="last_name" required>
-                <br>
-        </div>
-        <div class="field">
-                <label for="email"><b>Email</b></label>
-                <input type="email" class="form-control" placeholder="juanita@sanchez.cl" name="email" required>
-                <br>
-        </div>
-        
-        <div class="field">
-                <label for="password"><b>Contraseña</b></label>
-                <input type="password" class="form-control" placeholder="muy secreta" name="password" required>
-                <br>
-        </div>
-        
-        <button type="submit" >Registrarse</button>
-        <br>
-
-        <br>
-        <br>
-    </div>
-    </form>
-</div>

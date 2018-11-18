@@ -14,6 +14,15 @@ router.get('session-new', '/', async (ctx) => {
             },)
 });
 
+
+router.get('signup view', '/signup', async (ctx) => {
+  await ctx.render('session/signup',
+            {
+              notice: ctx.flashMessage.notice,
+              submitSignupPath: ctx.router.url('session-signup'),
+              submitLoginPath: ctx.router.url('session-create'),
+            },)
+});
 router.post('session-create', '/', async (ctx) => {
   const { username, password } = ctx.request.body;
   const response = await queryEngine.loginAPI(API_URL, username, password);

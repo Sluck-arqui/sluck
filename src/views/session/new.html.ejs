@@ -1,73 +1,47 @@
-<h1>
-  Bienvenido a Sluck!
-</h1>
-<h2>
+
+<br>
+<br>
+<br>
+<br>
+<h3>
   Para hacer uso de Sluck, debes iniciar sesion o registrarte
-</h2>
+</h3>
   <div>
 
 <br>
-
-<h2>Log In</h2>
-
 <%= notice%>
-<form class="single-form" action="<%= submitLoginPath %>" method="post">
-    <label for="username">
-     <strong> <span>Nombre de usuario</span></strong>
-<br>
-      <input type="text" name="username" placeholder="la_juanita_sanchez" id="username" value="<%= locals.username %>" />
-    </label>
-    <label for="password">
-      <strong><span>Contraseña</span></strong>
-<br>
-      <input type="password" name="password" placeholder="muy secreta" id="password" />
-    </label>
-    <div class="actions">
-      <input type="submit" value="Inicia sesión" />
-    </div>
+<div class="form_container"> 
+    
+  <form action="<%= submitLoginPath %>"  class="form-div" method="post">
+  <div class="imgcontainer">
+      <img src="/assets/login.png" width="130" height="130">
+  </div>
+
+  <div>
+
+      <div class="field">
+          <label for="uname"><b>Usuario</b></label>
+          <input type="text"  placeholder="Ingresar usuario" value="<%= locals.username %>" class="input-form-user" name="username" required>
+          <br>
+          <br>
+          <label for="psw"><b>Contraseña </b></label>
+          <input type="password" placeholder="Ingresar contraseña" class="input-form" name="password" required>
+          <br>
+          
+      </div>
+      <div class="center" >
+      
+          <input class="submit-form" type="submit" value="Iniciar Sesión">
+          <br>
+          <br>
+          <label>
+          
+      </div>
+      <span> <a href="/session/signup"> Registrarme</a></span>
+      <br>
+      <br>
+  </div>
   </form>
 </div>
-<br>
-<hr>
-<br>
-<div class="form_container form_center"> 
-    <h2>Sign Up</h2>
 
-    <form action="<%= submitSignupPath %>" method="post">
 
-    <div class="form-group">
-        <div class="field">
-            <label for="username"><b>Nombre de usuario</b></label>
-            <input type="text" class="form-control" placeholder="la_juanita_sanchez" name="username" required>
-            <br>        
-        </div>
-        <div class="field">
-                <label for="first_name"><b>Nombre</b></label>
-                <input type="text" class="form-control" placeholder="Juanita" name="first_name" required>
-                <br>
-        </div>
-        <div class="field">
-                <label for="last_name"><b>Apellido</b></label>
-                <input type="text" class="form-control" placeholder="Sánchez" name="last_name" required>
-                <br>
-        </div>
-        <div class="field">
-                <label for="email"><b>Email</b></label>
-                <input type="email" class="form-control" placeholder="juanita@sanchez.cl" name="email" required>
-                <br>
-        </div>
-        
-        <div class="field">
-                <label for="password"><b>Contraseña</b></label>
-                <input type="password" class="form-control" placeholder="muy secreta" name="password" required>
-                <br>
-        </div>
-        
-        <button type="submit" >Registrarse</button>
-        <br>
-
-        <br>
-        <br>
-    </div>
-    </form>
-</div>

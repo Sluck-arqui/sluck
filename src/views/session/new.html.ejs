@@ -1,14 +1,17 @@
 
-
-<h2>
+<br>
+<br>
+<br>
+<br>
+<h3>
   Para hacer uso de Sluck, debes iniciar sesion o registrarte
-</h2>
+</h3>
   <div>
 
 <br>
 <%= notice%>
 <div class="form_container"> 
-
+    
   <form action="<%= submitLoginPath %>"  class="form-div" method="post">
   <div class="imgcontainer">
       <img src="/assets/login.png" width="130" height="130">
@@ -18,11 +21,11 @@
 
       <div class="field">
           <label for="uname"><b>Usuario</b></label>
-          <input type="text"  placeholder="Enter Username" value="<%= locals.username %>" class="input-form-user" name="username" required>
+          <input type="text"  placeholder="Ingresar usuario" value="<%= locals.username %>" class="input-form-user" name="username" required>
           <br>
           <br>
           <label for="psw"><b>Contraseña </b></label>
-          <input type="password" placeholder="Enter Password" class="input-form" name="password" required>
+          <input type="password" placeholder="Ingresar contraseña" class="input-form" name="password" required>
           <br>
           
       </div>
@@ -34,7 +37,7 @@
           <label>
           
       </div>
-      <span> <a href="session/signup"> Registrarme</a></span>
+      <span> <a href="/session/signup"> Registrarme</a></span>
       <br>
       <br>
   </div>

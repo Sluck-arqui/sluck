@@ -1,35 +1,51 @@
-<h1>
-  Bienvenido a Sluck!
-</h1>
+
+
 <h2>
   Para hacer uso de Sluck, debes iniciar sesion o registrarte
 </h2>
   <div>
 
 <br>
-
-<h2>Log In</h2>
-
 <%= notice%>
-<form class="single-form" action="<%= submitLoginPath %>" method="post">
-    <label for="username">
-     <strong> <span>Nombre de usuario</span></strong>
-<br>
-      <input type="text" name="username" placeholder="la_juanita_sanchez" id="username" value="<%= locals.username %>" />
-    </label>
-    <label for="password">
-      <strong><span>Contraseña</span></strong>
-<br>
-      <input type="password" name="password" placeholder="muy secreta" id="password" />
-    </label>
-    <div class="actions">
-      <input type="submit" value="Inicia sesión" />
-    </div>
+<div class="form_container"> 
+
+  <form action="<%= submitLoginPath %>"  class="form-div" method="post">
+  <div class="imgcontainer">
+      <img src="/assets/login.png" width="130" height="130">
+  </div>
+
+  <div>
+
+      <div class="field">
+          <label for="uname"><b>Usuario</b></label>
+          <input type="text"  placeholder="Enter Username" value="<%= locals.username %>" class="input-form-user" name="username" required>
+          <br>
+          <br>
+          <label for="psw"><b>Contraseña </b></label>
+          <input type="password" placeholder="Enter Password" class="input-form" name="password" required>
+          <br>
+          
+      </div>
+      <div class="center" >
+      
+          <input class="submit-form" type="submit" value="Iniciar Sesión">
+          <br>
+          <br>
+          <label>
+          <input type="checkbox" checked="checked" name="remember"> Remember me
+          </label>
+      </div>
+      
+      <br>
+      <br>
+  </div>
   </form>
 </div>
-<br>
-<hr>
-<br>
+
+
+
+
+
 <div class="form_container form_center"> 
     <h2>Sign Up</h2>
 

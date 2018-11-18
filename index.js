@@ -17,3 +17,4 @@ db.sequelize
   })
   .catch(err => console.error('Unable to connect to the database:', err));
 
+app.listen(3000, '127.0.0.1');

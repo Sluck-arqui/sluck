@@ -25,7 +25,7 @@ router.get('index','/', async (ctx) => {
     	for(var i = 0; i < response['groups'].length; i++)
 	{
 		let elem = response['groups'][i];
-		let grp = await queryEngine.fetchGroup(API_URL, headers, elem);
+		let grp = await queryEngine.fetchGroup(API_URL, headers, elem, ctx.session.currentTokenOtherAPI);
 		myGroups.push(grp);
 	}
     }

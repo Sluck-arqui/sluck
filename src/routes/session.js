@@ -15,12 +15,15 @@ router.get('session-new', '/', async (ctx) => {
 });
 
 router.post('session-create', '/', async (ctx) => {
-  const { username, password } = ctx.request.body;
-  const response = await queryEngine.loginAPI(API_URL, username, password);
+  const { username, email, password } = ctx.request.body;
+  const [response, response2] = await queryEngine.loginAPI(API_URL, username, email, password);
   const user = response.user;
-  console.log(response);
+  console.log('response2:', response2);
   if (response.status_code === 201) {
     try {
+      ctx.session.currentTokenOtherAPI = response2.token;
+      console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
+
       const userkey = await ctx.orm.userKey.build({
         'userId': user.id,
         'token': user.oauth_token,
@@ -29,14 +32,20 @@ router.post('session-create', '/', async (ctx) => {
       ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
       ctx.session.currentToken = user.oauth_token; //test
+
       ctx.flashMessage.notice = 'Inicio de sesión exitoso';
-      console.log('[i] User logged in');
-      console.log(ctx.router.url('index'));
+      // console.log('[i] User logged in');
+      // console.log(ctx.router.url('index'));
       await ctx.redirect(ctx.router.url('index')[0]);
     } catch (validationError) {
+      ctx.session.currentTokenOtherAPI = response2.token;
+      console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
+
+
       ctx.session.currentToken = user.oauth_token; //test
       ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
+
 	console.log('[i] User logged in');
       console.log(ctx.router.url('index'));
       await ctx.redirect(ctx.router.url('index')[0]);

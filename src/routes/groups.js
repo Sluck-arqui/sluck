@@ -20,10 +20,11 @@ router.post('create-group-submit', '/new', async (ctx) => {
   const { name } = ctx.request.body;
   const { description } = ctx.request.body;
   // esto supone que se mandó por el post un field text
+  console.log(ctx.session);
   let headers = {
-	"Oauth-token": ctx.session.currentToken
+  'Oauth-token': ctx.session.currentToken
   };
-  let ans = await queryEngine.createGroup(API_URL, headers, name, description);
+  let ans = await queryEngine.createGroup(API_URL, headers, name, description, ctx.session.currentTokenOtherAPI);
   console.log(ans);
   await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId);
 
@@ -43,7 +44,7 @@ router.get('group-show', '/:id', async (ctx) => {
   let token = result.token
 
   const headers = {"Oauth-token":token};
-  const group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id);
+  const group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id, ctx.session.currentTokenOtherAPI);
   let messages = [];
   console.log(group.messages);
   for(var i = 0; i < group.messages.length; i++){

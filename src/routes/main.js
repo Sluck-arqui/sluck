@@ -6,13 +6,14 @@ const router = new KoaRouter();
 const API_URL = 'http://charette11.ing.puc.cl';
 
 router.get('index','/', async (ctx) => {
-  console.log(ctx.session);
-  if (ctx.session.currentUserId === undefined) {
+  if (ctx.session && ctx.session.currentUserId === undefined) {
+    console.log('dentra aca');
     ctx.flashMessage.notice = 'Debes hacer login o registrarte para entrar';
     await ctx.redirect(ctx.router.url('session-new'));
   }
   else {
-    console.log("logged user")
+    console.log(ctx.session);
+    console.log('log');
     let result = await ctx.orm.userKey.findOne({ where: {userId: ctx.session.currentUserId.toString()}})
     let token = result.token
     const headers = {"Oauth-token":token};

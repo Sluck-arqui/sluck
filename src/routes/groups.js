@@ -20,10 +20,10 @@ router.post('create-group-submit', '/new', async (ctx) => {
   const { name } = ctx.request.body;
   const { description } = ctx.request.body;
   // esto supone que se mandó por el post un field text
-  let headers = {
-	"Oauth-token": ctx.session.currentToken
+  const headers = {
+    'Oauth-token': ctx.session.currentToken,
   };
-  let ans = await queryEngine.createGroup(API_URL, headers, name, description);
+  const ans = await queryEngine.createGroup(API_URL, headers, name, description);
   console.log(ans);
   await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId);
 

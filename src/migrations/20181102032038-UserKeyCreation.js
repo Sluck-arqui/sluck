@@ -1,14 +1,12 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-	
-
- return queryInterface.createTable('userKey', {
+    return queryInterface.createTable('userKey', {
       token: {
         allowNull: false,
         type: Sequelize.STRING,
       },
       userId: {
-	primaryKey: true,
+        primaryKey: true,
         allowNull: false,
         type: Sequelize.STRING,
         unique: true,
@@ -16,7 +14,6 @@ module.exports = {
       },
     });
   },
-
   down(queryInterface, Sequelize) {
   },
 };

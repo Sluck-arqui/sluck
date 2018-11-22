@@ -22,21 +22,21 @@ router.post('create-group-submit', '/new', async (ctx) => {
   // esto supone que se mandó por el post un field text
   console.log(ctx.session);
   let headers = {
-  'Oauth-token': ctx.session.currentToken
+  'Oauth-token': ctx.session.currentToken,
   };
   let ans = await queryEngine.createGroup(API_URL, headers, name, description, ctx.session.currentTokenOtherAPI);
+  const { topic_id } = ans[1];
   console.log(ans);
-  await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId);
+  await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId, topic_id, ctx.session.currentTokenOtherAPI);
 
   ctx.redirect(ctx.router.url('create-group'));
 });
 
 router.get('group-search', '/search/:name', async (ctx) => {
-	console.log(ctx.params.name);
-        await ctx.render('groups/index',{
-		layout:false,
-	});
-
+  console.log(ctx.params.name);
+  await ctx.render('groups/index', {
+    layout: false,
+  });
 });
 
 router.get('group-show', '/:id', async (ctx) => {
@@ -72,16 +72,20 @@ router.post('messages-group-add', '/message/:id', async (ctx) => {
 });
 
 router.post('add-member-group', '/:id', async (ctx) => {
- try {
- const { user_id } = ctx.request.body.user_id;
-  const { group } = crx.params.id;
-  const { headers } = ctx.state;
-  // esto supone que se mandó por el post un field text
-  await queryEngine.addMember(API_URL, headers, group.id, user_id);
+  try {
+    const { user_id } = ctx.request.body.user_id;
+    const { group } = ctx.params.id;
+    const { headers } = ctx.state;
+    // esto supone que se mandó por el post un field text
+    // CÓMO CONSEGUIR EL ID EN LA OTRA API?
+    // pedir todos los  http://charette9.ing.puc.cl/api/topics y buscar ahí
+    const topic_id = await queryEngine.getTopicId(group, ctx.session.currentTokenOtherAPI);
+
+    await queryEngine.addMember(API_URL, headers, group.id, user_id, topic_id, ctx.session.currentTokenOtherAPI);
   } catch (e) {
-	//nada
-}
-ctx.redirect('/');
+    //nada
+  }
+  ctx.redirect('/');
 });
 
 router.post('delete-member-group', '/:id', async (ctx) => {

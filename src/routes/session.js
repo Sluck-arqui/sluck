@@ -1,54 +1,51 @@
+/* eslint camelcase: "off" */
 const Sequelize = require('sequelize');
 const KoaRouter = require('koa-router');
+
 const router = new KoaRouter();
 const queryEngine = require('../lib/queryEngine.js');
 
 const API_URL = 'http://charette11.ing.puc.cl';
 
 router.get('session-new', '/', async (ctx) => {
-  await ctx.render('session/new',
-            {
-              notice: ctx.flashMessage.notice,
-              submitSignupPath: ctx.router.url('session-signup'),
-              submitLoginPath: ctx.router.url('session-create'),
-            },)
+  await ctx.render(
+    'session/new',
+    {
+      notice: ctx.flashMessage.notice,
+      submitSignupPath: ctx.router.url('session-signup'),
+      submitLoginPath: ctx.router.url('session-create'),
+    },
+  );
+  delete ctx.flashMessage.notice;
 });
 
 router.post('session-create', '/', async (ctx) => {
+  console.log('LOGIN DATA RECEIVED: \n', ctx.request.body);
   const { username, email, password } = ctx.request.body;
   const [response, response2] = await queryEngine.loginAPI(API_URL, username, email, password);
-  const user = response.user;
-  console.log('response2:', response2);
-  if (response.status_code === 201) {
+  const { user } = response;
+  console.log('RESPONSE LOGIN API1:', response);
+  console.log('RESPONSE LOGIN API2:', response2);
+  if (response.status_code === 201 && response2.user) {
     try {
-      ctx.session.currentTokenOtherAPI = response2.token;
-      console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
-
-      const userkey = await ctx.orm.userKey.build({
-        'userId': user.id,
-        'token': user.oauth_token,
-      })
-      await userkey.save();
       ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
-      ctx.session.currentToken = user.oauth_token; //test
+      ctx.session.currentUserIdOtherAPI = response2.user.id;
+      ctx.session.currentToken = user.oauth_token;
+      ctx.session.currentTokenOtherAPI = response2.token;
+
+      console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
+      console.log('ctx.session.currentToken:', ctx.session.currentToken);
+      console.log('ctx.session.currentUsername:', ctx.session.currentUsername);
+      console.log('ctx.session.currentUserId:', ctx.session.currentUserId);
 
       ctx.flashMessage.notice = 'Inicio de sesión exitoso';
       // console.log('[i] User logged in');
-      // console.log(ctx.router.url('index'));
+      console.log('INDEX ROUTE', ctx.router.url('index'));
       await ctx.redirect(ctx.router.url('index')[0]);
-    } catch (validationError) {
-      ctx.session.currentTokenOtherAPI = response2.token;
-      console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
-
-
-      ctx.session.currentToken = user.oauth_token; //test
-      ctx.session.currentUsername = user.username;
-      ctx.session.currentUserId = user.id;
-
-	console.log('[i] User logged in');
-      console.log(ctx.router.url('index'));
-      await ctx.redirect(ctx.router.url('index')[0]);
+    } catch (error) {
+      console.log(error);
+      await ctx.redirect(ctx.router.url('session-new'));
     }
   } else {
     ctx.flashMessage.notice = 'Error en las credenciales de inicio';
@@ -57,26 +54,32 @@ router.post('session-create', '/', async (ctx) => {
 });
 
 router.post('session-signup', '/signup', async (ctx) => {
-  const { username, first_name, last_name, email, password } = ctx.request.body;
-  try{
-    console.log(username);
+  // console.log('SIGNUP INFO RECEIVED FROM VIEW:\n', ctx.request.body);
+  const {
+    username, first_name, last_name, email, password,
+  } = ctx.request.body;
+  try {
     const response = await queryEngine.signUpAPI(API_URL, username, first_name, last_name, email, password);
-    console.log(response);
-    if (response.status_code === 201) {
-      ctx.flashMessage.notice = "Ahora puedes hcer login con tus datos";
+    // console.log('Response API1:\n', response[0]);
+    // console.log('\nResponse API2:\n', response[1]);
+    if (response[0].status_code === 201 && response[1].id) {
+      ctx.flashMessage.notice = 'Su cuenta fue registrada exitosamente';
     } else {
-      ctx.flashMessage.notice = "Su cuenta no pudo ser creada";
+      ctx.flashMessage.notice = 'No se pudo hacer registro de su cuenta';
     }
   } catch (e) {
-    let a = 0;
+    console.log(e);
   }
   await ctx.redirect(ctx.router.url('session-new'));
 });
 
 router.delete('session-destroy', '/', async (ctx) => {
-  ctx.orm.userKey.findOne( { where: { 'userId': ctx.session.currentUserId } }
-  ).then(function(userkey){userkey.destroy()});
   delete ctx.session.currentUserId;
+  delete ctx.session.currentUsername;
+  delete ctx.session.currentUserId;
+  delete ctx.session.currentUserIdOtherAPI;
+  delete ctx.session.currentToken;
+  delete ctx.session.currentTokenOtherAPI;
   ctx.flashMessage.notice = 'Término de sesión exitoso';
   ctx.redirect('/');
 });

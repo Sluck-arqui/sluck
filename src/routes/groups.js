@@ -5,14 +5,14 @@ const router = new KoaRouter();
 
 const API_URL = 'http://charette11.ing.puc.cl'; // probablemente process.env.API_URL
 
-//router.param('id', async (id, ctx, next) => {
+// router.param('id', async (id, ctx, next) => {
 //  return next();
-//});
+// });
 
 router.get('create-group', '/new', async (ctx) => {
   await ctx.render('/groups/new', {
-	layout: false,
-        submitGroupPath: ctx.router.url('create-group-submit')
+    layout: false,
+    submitGroupPath: ctx.router.url('create-group-submit'),
   });
 });
 
@@ -21,10 +21,13 @@ router.post('create-group-submit', '/new', async (ctx) => {
   const { description } = ctx.request.body;
   // esto supone que se mandó por el post un field text
   console.log(ctx.session);
-  let headers = {
-  'Oauth-token': ctx.session.currentToken,
+  const headers = {
+    'Oauth-token': ctx.session.currentToken,
   };
-  let ans = await queryEngine.createGroup(API_URL, headers, name, description, ctx.session.currentTokenOtherAPI);
+  const ans = await queryEngine.createGroup(
+    API_URL, headers, name,
+    description, ctx.session.currentTokenOtherAPI,
+  );
   const { topic_id } = ans[1];
   console.log(ans);
   await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId, topic_id, ctx.session.currentTokenOtherAPI);
@@ -40,8 +43,7 @@ router.get('group-search', '/search/:name', async (ctx) => {
 });
 
 router.get('group-show', '/:id', async (ctx) => {
-  let result = await ctx.orm.userKey.findOne({ where: {userId: ctx.session.currentUserId.toString()}})
-  let token = result.token
+  let token = ctx.session.currentToken;
 
   const headers = {"Oauth-token":token};
   const group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id, ctx.session.currentTokenOtherAPI);

@@ -8,6 +8,7 @@ const fetch = require('node-fetch');
 
 const signUpAPI = async (API_URL, username, first_name, last_name, email, password) => {
   const url = `${API_URL}/register/`;
+  const url2 = 'https://charette9.ing.puc.cl/api/users/';
   let body = {
     username,
     first_name,
@@ -15,19 +16,16 @@ const signUpAPI = async (API_URL, username, first_name, last_name, email, passwo
     email,
     password,
   };
-  body = JSON.stringify(body);
-  const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
-
-  const url2 = 'https://charette9.ing.puc.cl/api/users/';
   let body2 = {
     username,
     email,
     password,
   };
-  const headers = { 'Content-Type': 'application/json' };
+  body = JSON.stringify(body);
   body2 = JSON.stringify(body2);
-  const response2 = await fetch(url2, { method: 'POST', body: body2, headers }).then(data => data.json());
-  console.log(response2);
+  const headers2 = { 'Content-Type': 'application/json' };
+  const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
+  const response2 = await fetch(url2, { method: 'POST', body: body2, headers: headers2 }).then(data => data.json());
 
   return [response, response2]; // { 'Oauth-Token': response.user.oauth_token };
 };
@@ -67,7 +65,7 @@ const fetchMessage = async (API_URL, headers, id) => {
 };
 
 const fetchGroup = async (API_URL, headers, id, tokenOtherAPI) => {
-  console.log("[i] Fetching group");
+  console.log('[i] Fetching group');
   if (!headers) {
     return "You aren't logged in";
   }
@@ -161,7 +159,7 @@ const patchMessage = async (API_URL, headers, message_id, text) => {
   }
   const url = `${API_URL}/message/`;
   let body = { message_id, text };
-  body = JSON.stringify(body);  
+  body = JSON.stringify(body);
   const response = await fetch(url, { method: 'PATCH', headers, body }).then(data => data.json());
   return response;
 };
@@ -261,18 +259,18 @@ const deleteUser = async (API_URL, headers, user_id) => {
   }
   const url = `${API_URL}/user/`;
   let body = { user_id };
-  body = JSON.stringify(body);  
+  body = JSON.stringify(body);
   const response = await fetch(url, { method: 'GET', headers, body }).then(data => data.json());
   return response;
 };
 
 
 // Groups
-//get actual groups
+// get actual groups
 
-const fetchMembership = async (API_URL, headers) => {
-  if (!headers) {
-    return "You aren't logged in";
+const fetchMemberships = async (API_URL, headers, tokenOtherAPI) => {
+  if (!headers || !tokenOtherAPI) {
+    return { error: 'You aren\'t logged in to both APIs' };
   }
   const url = `${API_URL}/user/groups/`;
   const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
@@ -358,7 +356,7 @@ const getTopicId = async (group, tokenOtherAPI) => {
   const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
 
   response.forEach((topic) => {
-    if (topic.title === group.name ) {
+    if (topic.title === group.name) {
       return topic.id;
     }
   });
@@ -384,6 +382,6 @@ module.exports = {
   createGroup,
   addMember,
   removeMember,
-  fetchMembership,
+  fetchMemberships,
   getTopicId,
 };

@@ -1,22 +1,33 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-	
-
- return queryInterface.createTable('userKey', {
+    return queryInterface.createTable('userKeys', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
       token: {
         allowNull: false,
         type: Sequelize.STRING,
       },
       userId: {
-	primaryKey: true,
+        primaryKey: true,
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         unique: true,
         notEmpty: true,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },
 
-  down(queryInterface, Sequelize) {
-  },
+  down: queryInterface => queryInterface.dropTable('userKeys'),
 };

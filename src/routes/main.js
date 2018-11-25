@@ -52,6 +52,8 @@ router.get('index', '/', async (ctx) => {
       'index',
       {
         groups: myGroups,
+        newHashtagSearch: hashtag => ctx.router.url('new-hashtag-search', { hashtag: hashtag }),
+        newUsernameSearch: username => ctx.router.url('new-username-search', { searchName: username }),
         destroySessionPath: ctx.router.url('session-destroy'),
         currentUser: ctx.session.currentUsername,
       },

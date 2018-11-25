@@ -25,9 +25,9 @@ router.use(async (ctx, next) => {
     currentUser: ctx.session.userId && await ctx.orm.userKey.findAll({ where: { userId: ctx.session.userId } }),
     destroySessionPath: ctx.router.url('session-destroy'),
     createGroupPath: ctx.router.url('create-group-submit'),
+    newHashtagSearch: hashtag => ctx.router.url('new-hashtag-search', { hashtag: hashtag }),
+    newUsernameSearch: username => ctx.router.url('new-username-search', { searchName: username }),
 //    addMessageGroupPath: ctx.router.url('messages-group-add'),
-    newHashtagSearch: ctx.router.url('new-hashtag-search'),
-    newUsernameSearch: ctx.router.url('new-username-search'),
     submitLoginPath: ctx.router.url('session-create'),
   });
   return next();

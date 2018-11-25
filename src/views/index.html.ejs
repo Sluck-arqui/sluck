@@ -2,21 +2,21 @@
 <div id="mainBar">
   <div>
   <select id="mySelect" onchange="changeSearch()">
-      <option value="1">Search Group</option>
-      <option value="2">Search Hashtag</option>
-      <option value="3">Search User</option>
+      <option value="0" selected="selected">Search</option>
+      <option value="1">Search Hashtag</option>
+      <option value="2">Search User</option>
   </select>
-  <form id="1" method="GET" action="<%//=searchGroupPath%>">
-    <input style="width: 90%;" type="text" id="searchMe" placeholder="Search group here!"></input>
-    <input type="button" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="Serch"></input>
+  <!-- <form id="1" method="GET" action="<%//=searchGroupPath%>">
+    <input style="width: 90%;" type="text" id="searchMe" placeholder="Search group here!"/>
+    <input type="button" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="Search"/>
+  </form> -->
+  <form id="1" style="display: none" action="<%=// newHashtagSearch %>" method="get">
+    <input style="width: 90%;" id="hashtagInput" type="text" name="text" placeholder="Search a hashtag here!"/>
+    <input type="button" onClick="changeSrc('hashtags/'+document.getElementById('hashtagInput').value)" value="Search"/>
   </form>
-  <form id="2" style="display: none" action="<%= newHashtagSearch %>" method="post">
-    <input style="width: 90%;" type="text" name="text" placeholder="Search a hashtag here!"/>
-    <input type="submit" value="Search"/>
-  </form>
-  <form id="3" style="display: none" action="<%= newUsernameSearch %>" method="post">
-    <input style="width: 90%;" type="text" name="username" placeholder="Search an username here!"/>
-    <input type="submit" value="Search"/>
+  <form id="2" style="display: none" action="<%= newUsernameSearch %>" method="get">
+    <input style="width: 90%;" id="usernameInput" type="text" name="username" placeholder="Search an username here!"/>
+    <input type="button" onClick="changeSrc('hashtags/username/'+document.getElementById('usernameInput').value)" value="Search"/>
   </form>
   <br>
   Pertenezco a <%= groups.length %> grupos
@@ -45,22 +45,12 @@
     var id = document.getElementById("mySelect").value;
     var x = document.getElementById(id);
     console.log(x);
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
+    x.style.display = "block";
     if (id == 1) {
-      var option1 = document.getElementById("2");
-      var option2 = document.getElementById("3");
+      var option = document.getElementById("2");
     } else if (id == 2) {
-      var option1 = document.getElementById("1");
-      var option2 = document.getElementById("3");
-    } else if (id == 3) {
-      var option1 = document.getElementById("1");
-      var option2 = document.getElementById("2");
+      var option = document.getElementById("1");
     }
-    option1.style.display = "none";
-    option2.style.display = "none";
+    option.style.display = "none";
   }
 </script>

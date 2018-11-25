@@ -1,47 +1,63 @@
+<head>
+    <link rel="stylesheet" href="../../assets/styles/index.scss">   
+</head>
+<div>
+    <h3>
+        Bienvenido a Sluck
+    </h3>
+    <h3>
+        Bienvenido a Sluck
+    </h3> 
+    <h3>
+        Bienvenido a Sluck
+    </h3>        
+    <h6>
+        Debes iniciar sesión o registrarte para usar Sluck
+    </h6>
+    <div>
 
-<br>
-<br>
-<br>
-<br>
-<h3>
-  Para hacer uso de Sluck, debes iniciar sesion o registrarte
-</h3>
-  <div>
+    <br>
+    <%= notice%>
+    <div class="form_container"> 
+        <form action="<%= submitSignupPath %>" class="form-div" method="post">
+            <div class="imgcontainer">
+                <img src="/assets/login.png" width="130" height="130">
+            </div>
+            <div class="form-group">
 
-<br>
-<%= notice%>
-<div class="form_container"> 
-    
-  <form action="<%= submitLoginPath %>"  class="form-div" method="post">
-  <div class="imgcontainer">
-      <img src="/assets/login.png" width="130" height="130">
-  </div>
-
-  <div>
-
-      <div class="field">
-          <label for="uname"><b>Usuario</b></label>
-          <input type="text"  placeholder="Ingresar usuario" value="<%= locals.username %>" class="input-form-user" name="username" required>
-          <br>
-          <br>
-          <label for="psw"><b>Contraseña </b></label>
-          <input type="password" placeholder="Ingresar contraseña" class="input-form" name="password" required>
-          <br>
-          
-      </div>
-      <div class="center" >
-      
-          <input class="submit-form" type="submit" value="Iniciar Sesión">
-          <br>
-          <br>
-          <label>
-          
-      </div>
-      <span> <a href="/session/signup"> Registrarme</a></span>
-      <br>
-      <br>
-  </div>
-  </form>
+                <div class="field">
+                    <label for="username"><b>Nombre de usuario</b></label>
+                    <input type="text" class="signup-label" placeholder=" " name="username" required>
+                    <br>        
+                </div>
+                <div class="field">
+                    <label for="first_name"><b>Nombre</b></label>
+                    <input type="text"class="signup-label" placeholder="" name="first_name" required>
+                    <br>
+                </div>
+                <div class="field">
+                    <label for="last_name"><b>Apellido</b></label>
+                    <input type="text" class="signup-label" placeholder="" name="last_name" required>
+                    <br>
+                </div>
+                <div class="field">
+                    <label for="email"><b>Email</b></label>
+                    <input type="email" class="signup-label" placeholder="" name="email" required>
+                    <br>
+                </div>
+                
+                <div class="field">
+                    <label for="password"><b>Contraseña</b></label>
+                    <input type="password" class="signup-label" placeholder="" name="password" required>
+                    <br>
+                </div>
+                <div class="center">
+                    <input class="submit-form" type="submit" value="Registrarse">
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+    
 
 

@@ -7,6 +7,7 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const assets = require('./assets');
 const routes = require('./routes');
 const orm = require('./models');
 
@@ -71,6 +72,8 @@ app.use((ctx, next) => {
   ctx.request.method = override.call(ctx, ctx.request.body.fields || ctx.request.body);
   return next();
 });
+
+app.use(assets(developmentMode));
 
 render(app, {
   root: path.join(__dirname, 'views'),

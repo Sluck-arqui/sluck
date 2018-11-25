@@ -17,6 +17,7 @@ router.use(async (ctx, next) => {
 //    addMessageGroupPath: ctx.router.url('messages-group-add'),
     newHashtagSearch: ctx.router.url('new-hashtag-search'),
     newUsernameSearch: ctx.router.url('new-username-search'),
+    submitLoginPath: ctx.router.url('session-create'),
   });
   return next();
 });

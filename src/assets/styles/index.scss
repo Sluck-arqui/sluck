@@ -14,7 +14,6 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-
 button {
     background-color: #4CAF50;
     color: white;
@@ -27,6 +26,14 @@ button {
 
 button:hover {
     opacity: 0.8;
+}
+
+h3 {
+    margin-top: 700px;
+}
+
+.welcome {
+    margin-top: 700px;
 }
 
 .cancelbtn {

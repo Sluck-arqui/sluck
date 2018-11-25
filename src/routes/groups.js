@@ -20,60 +20,82 @@ router.post('create-group-submit', '/new', async (ctx) => {
   const { name } = ctx.request.body;
   const { description } = ctx.request.body;
   // esto supone que se mandó por el post un field text
-  console.log(ctx.session);
+  // console.log(ctx.session);
   const headers = {
     'Oauth-token': ctx.session.currentToken,
   };
-  const ans = await queryEngine.createGroup(
+  const group = await queryEngine.createGroup(
     API_URL, headers, name,
     description, ctx.session.tokenOtherAPI,
   );
-  const { id } = ans[1];
-  console.log(ans);
-  await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId, id, ctx.session.tokenOtherAPI);
+  const { id } = group[1];
+  // console.log(group);
+  // console.log('SESSION BEFORE ADD MEMBER:\n', ctx.session);
+  await queryEngine.addMember(API_URL, headers, group[0].id, ctx.session.currentUserId, group[1].id, ctx.session.currentUserIdOtherAPI, ctx.session.currentUserTokenOtherAPI);
 
   ctx.redirect(ctx.router.url('create-group'));
 });
 
 router.get('group-search', '/search/:name', async (ctx) => {
-  console.log(ctx.params.name);
+  // console.log(ctx.params.name);
   await ctx.render('groups/index', {
     layout: false,
   });
 });
 
-router.get('group-show', '/:id', async (ctx) => {
-  let token = ctx.session.currentToken;
-
-  const headers = {"Oauth-token":token};
-  const group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id, ctx.session.currentTokenOtherAPI);
-  let messages = [];
-  console.log(group.messages);
-  for(var i = 0; i < group.messages.length; i++){
-    console.log(`[i] Fetching message ${group.messages[i]}`);
-    let ask = group.messages[i];
-    const aux = await queryEngine.fetchMessage(API_URL, headers, ask);
-    messages.push(aux);
+router.get('group-show', '/:id1/:id2', async (ctx) => {
+  let group;
+  let messages;
+  if (ctx.params.id1 != -3) {
+    const token = ctx.session.currentToken;
+    const headers = { 'OAuth-token': token };
+    group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id1, ctx.params.id2, ctx.session.tokenOtherAPI);
+    messages = [];
+    // console.log(group.messages);
+    for (let i = 0; i < group.messages.length; i++) {
+      console.log(group.messages.length);
+      // console.log(`[i] Fetching message ${group.messages[i]}`);
+      const ask = group.messages[i];
+      const aux = await queryEngine.fetchMessage(API_URL, headers, ask);
+      messages.push(aux);
+    }
+  } else {
+    const token = ctx.session.tokenOtherAPI;
+    const headers = { 'OAuth-token': token };
+    group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id1, ctx.params.id2, ctx.session.tokenOtherAPI);
+    // console.log('group es ', group);
+    // messages = group.group.messages2;
+    messages = [];
+    for (let i = 0; i < group.group.messages2.length; i++) {
+      // console.log(messages.length);
+      // console.log(`[i] Fetching message ${group.group.messages2[i]}`);
+      const message = group.group.messages2[i];
+      messages.push(message);
+    }
   }
+  
   await ctx.render('groups/view', {
     layout: false,
     group,
     messages,
-    addMemberPath: ctx.router.url('add-member-group',{"id":ctx.params.id}),
-    submitMessagePath: ctx.router.url('messages-group-add',{"id":ctx.params.id}),
+    addMemberPath: ctx.router.url('add-member-group',{"id1": ctx.params.id1, "id2": ctx.params.id2 }),
+    submitMessagePath: ctx.router.url('messages-group-add',{"id1": ctx.params.id1, "id2": ctx.params.id2}),
   });
 });
 
-router.post('messages-group-add', '/message/:id', async (ctx) => {
-  const {group_id} = ctx.params.id;
-  const headers = {"Oauth-token":ctx.session.currentToken};
-  const {text} = ctx.request.body.message;
+router.post('messages-group-add', '/message/:id1/:id2', async (ctx) => {
+  const {groupId} = ctx.params.id1;
+  const {postId} = ctx.params.id2;
+  const headers = {
+    'Oauth-token': ctx.session.currentToken,
+  };
+  const { text } = ctx.request.body.message;
   // esto supone que se mandó por el post un field text
-  await queryEngine.postMessageGroup(API_URL, headers, ctx.params.id, ctx.request.body.message);
-  ctx.redirect(ctx.router.url('group-show',{"id":ctx.params.id}));
+  await queryEngine.postMessageGroup(API_URL, headers, ctx.params.id1, ctx.params.id2, ctx.request.body.message, ctx.session.tokenOtherAPI);
+  ctx.redirect(ctx.router.url('group-show', { "id1": ctx.params.id1, "id2": ctx.params.id2 }));
 });
 
-router.post('add-member-group', '/:id', async (ctx) => {
+router.post('add-member-group', '/:id1/:id2', async (ctx) => {
   try {
     const { user_id } = ctx.request.body;
     const { id2 } = ctx.request.body;

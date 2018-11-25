@@ -35,16 +35,7 @@ router.post('session-create', '/', async (ctx) => {
       ctx.session.currentUserIdOtherAPI = response2.userId;
       ctx.session.currentUserTokenOtherAPI = response2.id;
       ctx.session.currentUserToken = user.oauth_token;
-      // ctx.session.currentTokenOtherAPI = response2.token;
-
-      // console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
-      console.log('ctx.session.currentToken:', ctx.session.currentToken);
-      console.log('ctx.session.currentUsername:', ctx.session.currentUsername);
-      console.log('ctx.session.currentUserId:', ctx.session.currentUserId);
-
       ctx.flashMessage.notice = 'Inicio de sesión exitoso';
-      // console.log('[i] User logged in');
-      console.log('INDEX ROUTE', ctx.router.url('index'));
       await ctx.redirect(ctx.router.url('index')[0]);
     } catch (error) {
       console.log(error);

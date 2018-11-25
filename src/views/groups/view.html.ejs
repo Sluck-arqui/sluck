@@ -10,14 +10,15 @@ Add someone! <form method="POST" action="<%=addMemberPath%>" >
 Members
 <br>
 
-<% group.members.forEach((member) => { %>
+<% group.group.members.forEach((member) => { %>
     <%= member.id %> a.k.a. <%= member.username%> <br>
 <%});%>
 <br>
 <br>
+<% console.log('---', messages) %>
 <% messages.forEach((message) => { %>
     <div class="msg">
-	User <%=message.author%> wrote: <%= message.text %>
+	User <%= message.author || message.personId %> wrote: <%= message.text || message.description %>
     </div>
 <% }); %>
 

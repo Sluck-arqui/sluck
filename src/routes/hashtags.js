@@ -39,12 +39,11 @@ router.post('new-username-search', '/username/', async (ctx) => {
   const headers = { 'OAuth-Token': ctx.session.currentToken };
   // console.log('headers are', headers);
   // const username = ctx.request.url.split('?')[1].split('=')[1];
-  console.log(ctx.state);
   const { username } = ctx.request.body;
   console.log('username es', username);
   const { limit } = 10;
-  let search = await queryEngine.fetchUsernameSearch(API_URL, headers, username, limit);
-  ctx.assert(search, 404);
+  let search = await queryEngine.fetchUsernameSearch(API_URL, headers, username, limit, ctx.session.tokenOtherAPI);
+  console.log('SEARCH RESULTS', search);
   search = JSON.stringify(search);
   await ctx.render('search/usernameShow', {
     search,

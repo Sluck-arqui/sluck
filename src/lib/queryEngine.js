@@ -75,38 +75,52 @@ const fetchMessage = async (API_URL, headers, id) => {
   return response;
 };
 
-const fetchGroup = async (API_URL, headers, id, postId, tokenOtherAPI) => {
+const fetchGroup = async (API_URL, headers, groupId, postId, tokenOtherAPI) => {
   console.log('[i] Fetching group');
   if (!headers) {
     return "You aren't logged in";
   }
-  const url = `${API_URL}/group/?group_id=${id}`;
-  console.log(headers);
-  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  let response;
+  if (groupId !== -3) {
+    const url = `${API_URL}/group/?group_id=${groupId}`;
+    response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  } else {
+    response = { id: -3 };
+  }
 
-  const url2 = `http://charette15.ing.puc.cl/api/posts/${postId}?access_token=${tokenOtherAPI}`;
+  let response2;
+  let responseMembers;
+  if (postId !== -3) {
+    const url2 = `http://charette15.ing.puc.cl/api/posts/${postId}?access_token=${tokenOtherAPI}`;
+    const headers2 = {
+      'Content-Type': 'application/json',
+    };
+    response2 = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
+    const urlMembers = `http://charette15.ing.puc.cl/api/posts/${postId}/people?$access_token=${tokenOtherAPI}`;
+    responseMembers = await fetch(urlMembers, { method: 'GET', headers: headers2 }).then(data => data.json());
+  } else {
+    response2 = { id: -3 };
+  }
+
+  const url3 = `http://charette15.ing.puc.cl/api/posts/${postId}/messages?access_token=${tokenOtherAPI}`;
   const headers2 = {
     'Content-Type': 'application/json',
   };
-  const response2 = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
-  console.log(response2);
-  const urlMembers = `http://charette15.ing.puc.cl/api/posts/${postId}/people?$access_token=${tokenOtherAPI}`;
-  const responseMembers = await fetch(urlMembers, { method: 'GET', headers: headers2 }).then(data => data.json());
-
+  const messages2 = await fetch(url3, { method: 'GET', headers: headers2 }).then(data => data.json());
+  console.log('messages2 es', messages2);
+  console.log("En fetch group: response2 es", response2);
   const members = [];
-  response2.subscribers.forEach((sub) => {
-    members.push([sub, 'username unknown']);
-  });
   const parsedResponse = {
     status_code: 200,
     group: {
-      id1: -3,
+      id1: response.id,
       id2: response2.id,
       description: response2.description,
       name: response2.title,
-      members,
+      members: response.members || [],
       unread: 0,
-      messages: response2.post_ids,
+      messages1: response.messages,
+      messages2,
 
     },
   };
@@ -126,7 +140,7 @@ const fetchGroup = async (API_URL, headers, id, postId, tokenOtherAPI) => {
 
 
 // POST Messages
-const postMessageGroup = async (API_URL, headers, group_id, text) => {
+const postMessageGroup = async (API_URL, headers, group_id, post_id, text, tokenOtherAPI) => {
   if (!headers) {
     return "You aren't logged in";
   }
@@ -137,6 +151,17 @@ const postMessageGroup = async (API_URL, headers, group_id, text) => {
   };
   body = JSON.stringify(body);
   const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
+
+  const headers2 = {
+    'Content-Type': 'application/json',
+  };
+  const url2 = `http://charette15.ing.puc.cl/api/posts/${post_id}/messages/?access_token=${tokenOtherAPI}`;
+  let body2 = {
+    description: text,
+  };
+  body2 = JSON.stringify(body2);
+  const response2 = await fetch(url2, { method: 'POST', headers: headers2, body: body2 }).then(data => data.json());
+  console.log('response2 en postMessageGroup es', response2);
   return response;
 };
 
@@ -227,14 +252,37 @@ const fetchHashtagSearch = async (API_URL, headers, text, limit) => {
 };
 
 // "GET" Username
-const fetchUsernameSearch = async (API_URL, headers, username, limit) => {
+const fetchUsernameSearch = async (API_URL, headers, username, limit, tokenOtherAPI) => {
   console.log(headers);
-  if (!headers) {
+  const definitiveResponse = {};
+  if (!headers && !tokenOtherAPI) {
     return "You aren't logged in";
   }
   const url = `${API_URL}/search/username/?username=${username}&limit=${limit}`;
   const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
-  return response;
+  console.log('response', response);
+  definitiveResponse.username = username;
+  definitiveResponse.id1 = response.users[0].id;
+
+  const headers2 = {
+    'Content-Type': 'application/json',
+  };
+  const url2 = `http://charette15.ing.puc.cl/api/services/179/people?access_token=${tokenOtherAPI}`;
+  const usersOtherAPI = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
+  // console.log('RESPONSE ', usersOtherAPI);
+
+
+  usersOtherAPI.forEach((user) => {
+    // console.log('user', user, response.users[0]);
+    // console.log('user', user);
+    console.log(response.users[0]);
+    if (user.email === response.users[0].email) {
+      console.log("BINGO");
+      definitiveResponse.id2 = user.id;
+    }
+  });
+
+  return definitiveResponse;
 };
 
 
@@ -317,7 +365,7 @@ const createGroup = async (API_URL, headers, name, description, tokenOtherAPI) =
 };
 
 // Add member to group
-const addMember = async (API_URL, headers, group_id, user_id, user_id2, postId, tokenOtherAPI) => {
+const addMember = async (API_URL, headers, group_id, user_id, postId, user_id2, tokenOtherAPI) => {
   if (!headers) {
     return "You aren't logged in";
   }

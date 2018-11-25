@@ -8,14 +8,13 @@
   </form>
   <br>
   Pertenezco a <%= groups.length %> grupos
-  <% console.log(groups) %>
 	<br>
 	<% groups.forEach ( (group) => { %>		
     <br>
     <% if (group.id1 !== -3) { %>
-      <input type="button" onClick="changeSrc('/groups/<%= group.id1 %>')" value="<%= group.name%>"/>
+      <input type="button" onClick="changeSrc('/groups/<%= group.id1 %>/<%=group.id2%>')" value="<%= group.name%>"/>
     <% } else { %>
-      <input type="button" value="<%= group.name%>"/>
+      <input type="button" onClick="changeSrc('/groups/<%= group.id1 %>/<%=group.id2%>')" value="<%= group.name%>"/>
     <% } %>
   <% });%>
 	<br>

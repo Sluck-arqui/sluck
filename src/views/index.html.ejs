@@ -2,14 +2,18 @@
 <div class="top-div">
   <b><p class="top-search">Pertenezco a <%= groups.length %> grupos </p> </b>
   <form   class="top-search"  method="GET" action="<%//=searchGroupPath%>">
-	<input  type="text"  placeholder="Search here!"></input>
+	<input  type="text"  placeholder="Busca aquí!"></input>
 	<input  type="button"  onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="Buscar"></input>
   </form>
 </div>
 <div id="mainBar">
   <div class="main-div">
-  
-  
+    <br>
+    <br>
+    <br>
+    <b><h1 class="center_name"><%= currentUser %></h1></b>
+    <br>
+    <br>
 	<% groups.forEach( (group) => { %>		
   
 		<input type="button" onClick="changeSrc('/groups/<%= group.id %>')" value="<%= group.name%>"/>
@@ -18,14 +22,16 @@
     <input type="button" onclick="changeSrc('/groups/new')" value="Create one" /> 
   <br>
 -->
-	<form action="<%= newHashtagSearch %>" method="post">
+	<form class="main-div" action="<%= newHashtagSearch %>" method="post">
         <input type="text" name="text" placeholder="hashtag"/>
         <input type="submit" value="Search"/>
   </form>
 
+  <hr>
+  <br>
   
 
-  <form action="<%= newUsernameSearch %>" method="post">
+  <form class="main-div"  action="<%= newUsernameSearch %>" method="post">
     <input type="text" name="username" placeholder="username"/>
     <input type="submit" value="Search"/>
     

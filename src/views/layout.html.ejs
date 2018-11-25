@@ -34,13 +34,12 @@
     .single-form {
 	border-style: none;
     }
-
     input {
         margin: 5px;
     }
     body{
     width: 100%;
-    background-color: #E6EBE0;
+    background-color: #F5F5F5;
     }
     #title{
 	padding: 10px 10px 10px 100px;
@@ -55,23 +54,180 @@
     
 #mainBar{
   float: left;
-  width: 29%;
+  width: 20%;
 }
 #mainFrame{
   float: right;
-  width: 70%;
+  width: 80%;
   height: 1000px;
 }
+
+.top-div{
+  text-align: right;
+  
+  height: 150px;
+}
+
+.top-search{
+  display: inline-block;
+   width: auto;
+   margin: auto;
+   text-align: left;
+   border: none;
+   height: 100px;
+}
+.form-div{
+  background-color: white;
+  padding: 30px;
+  border-radius: 45px 54px 54px 54px;
+  -moz-border-radius: 45px 54px 54px 54px;
+  -webkit-border-radius: 45px 54px 54px 54px;
+  border-style: solid;
+  border-width: 1px;
+}
+.form_container{
+	padding: 25%;
+	margin-top: -20%;
+}
+.imgcontainer {
+    text-align: center;
+    margin: 24px;
+}
+.signup-label{
+  position: absolute;
+  left: 50%;
+}
+.topnav {
+  position: fixed;
+  top: 0;
+  background-color: white;
+  overflow: hidden;
+  height: 100px;
+  box-shadow: 0px 0px 10px;
+  width: 120%;
+  margin-top: -2.3%; 
+  margin-left: -5.4%;
+} 
+.up-div{
+  background-color: white;
+  margin-left: -5%;
+  margin-right: -5%;
+}
+.field {
+	width: 65%;
+	border-radius: 10px;
+	padding: 20px;
+	margin: auto;
+	padding-left: 40px;
+  padding-right: 40px;
+}
+.center {
+  text-align: center;
+}
+.input-form-user{
+	height: 32px;
+	width: 225px;
+	border-radius: 4px;
+	border: 1px solid grey;
+	background-color: #FDFDFF;
+	outline: none;
+	color: black;
+	font-size: 15px;
+	padding-left: 8px;
+  margin-left: 42px;
+}
+.input-form {
+	height: 32px;
+	width: 225px;
+	border-radius: 4px;
+	border: 1px solid grey;
+	background-color: #FDFDFF;
+	outline: none;
+	color: black;
+	font-size: 15px;
+	padding-left: 8px;
+  margin-left: 8px;
+}
+.submit_button {
+	border-radius: 10px;
+	border: 0px;
+	height: 35px;
+	background-color: #40798C;
+	width: 150px;
+	text-align: center;
+	font-size: 20px;
+	cursor: pointer;
+	color: white;
+	font-weight: lighter;
+}
+.nav-exit{
+  position: fixed;
+  font-size: 20px;
+  top: 12px;
+  right: 18px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  
+}
+.logo-image{ 
+  position: relative;
+  left: 18px;
+}
+
+#create{
+  border: none;
+  background-color: white; 
+  right: 100px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    background-color: inherit;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 
     </style>
   </head>
   <body>
-  <div id="title">Sluck!</div>
-	<% if (currentUser) { %>
-	<nav>
-		<a href="<%= destroySessionPath %>">Salir</a>
-	</nav>
-	<% } %>
+     <div class="topnav">
+      <img class="logo-image"src="/assets/sluck-logo.png" width="150" height="150"> 
+      <hr>
+      <% if (currentUser) { %>
+      <div class="nav-exit">
+
+        <div class="dropdown">
+            <span>Mouse over me</span>
+            <div class="dropdown-content">
+
+                <a  onclick="changeSrc('/groups/new')"  href="#">Crear Grupo</a>
+                <a  href="<%= destroySessionPath %>">Salir</a>
+            </div>
+          </div> 
+        
+        </div>
+        <% } %>
+  
+    </div> 
+  <br>
+  <br>
+  <br>
+
+	
     <%- body %>
     <!--<script src="/assets/app.js"></script>-->
     <!--<script src="/assets/appReact.js"></script>-->

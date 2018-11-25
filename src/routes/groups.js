@@ -26,11 +26,11 @@ router.post('create-group-submit', '/new', async (ctx) => {
   };
   const ans = await queryEngine.createGroup(
     API_URL, headers, name,
-    description, ctx.session.currentTokenOtherAPI,
+    description, ctx.session.tokenOtherAPI,
   );
-  const { topic_id } = ans[1];
+  const { id } = ans[1];
   console.log(ans);
-  await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId, topic_id, ctx.session.currentTokenOtherAPI);
+  await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId, id, ctx.session.tokenOtherAPI);
 
   ctx.redirect(ctx.router.url('create-group'));
 });
@@ -75,15 +75,21 @@ router.post('messages-group-add', '/message/:id', async (ctx) => {
 
 router.post('add-member-group', '/:id', async (ctx) => {
   try {
-    const { user_id } = ctx.request.body.user_id;
+    const { user_id } = ctx.request.body;
+    const { id2 } = ctx.request.body;
     const { group } = ctx.params.id;
     const { headers } = ctx.state;
     // esto supone que se mandó por el post un field text
     // CÓMO CONSEGUIR EL ID EN LA OTRA API?
     // pedir todos los  http://charette9.ing.puc.cl/api/topics y buscar ahí
+
+    // GET /services/{id}/people
+
+    const urlPeople = `http://charette15.ing.puc.cl/api/services/179/people?access_token=${ctx.session.tokenOtherAPI}`;
+
     const topic_id = await queryEngine.getTopicId(group, ctx.session.currentTokenOtherAPI);
 
-    await queryEngine.addMember(API_URL, headers, group.id, user_id, topic_id, ctx.session.currentTokenOtherAPI);
+    await queryEngine.addMember(API_URL, headers, group.id, user_id, id, ctx.session.tokenOtherAPI);
   } catch (e) {
     //nada
   }

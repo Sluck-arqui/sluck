@@ -8,6 +8,7 @@ const queryEngine = require('../lib/queryEngine.js');
 const API_URL = 'http://charette11.ing.puc.cl';
 
 router.get('session-new', '/', async (ctx) => {
+  ctx.session.tokenOtherAPI = await queryEngine.authOtherAPI();
   await ctx.render(
     'session/new',
     {
@@ -22,19 +23,21 @@ router.get('session-new', '/', async (ctx) => {
 router.post('session-create', '/', async (ctx) => {
   console.log('LOGIN DATA RECEIVED: \n', ctx.request.body);
   const { username, email, password } = ctx.request.body;
-  const [response, response2] = await queryEngine.loginAPI(API_URL, username, email, password);
+  const [response, response2] = await queryEngine.loginAPI(API_URL, username, email, password, ctx.session.tokenOtherAPI);
   const { user } = response;
   console.log('RESPONSE LOGIN API1:', response);
   console.log('RESPONSE LOGIN API2:', response2);
-  if (response.status_code === 201 && response2.user) {
+  if (response.status_code === 201 && response2.userId) {
     try {
       ctx.session.currentUsername = user.username;
       ctx.session.currentUserId = user.id;
-      ctx.session.currentUserIdOtherAPI = response2.user.id;
-      ctx.session.currentToken = user.oauth_token;
-      ctx.session.currentTokenOtherAPI = response2.token;
+      ctx.session.currentUserMail = email;
+      ctx.session.currentUserIdOtherAPI = response2.userId;
+      ctx.session.currentUserTokenOtherAPI = response2.id;
+      ctx.session.currentUserToken = user.oauth_token;
+      // ctx.session.currentTokenOtherAPI = response2.token;
 
-      console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
+      // console.log('ctx.session.currentTokenOtherAPI:', ctx.session.currentTokenOtherAPI);
       console.log('ctx.session.currentToken:', ctx.session.currentToken);
       console.log('ctx.session.currentUsername:', ctx.session.currentUsername);
       console.log('ctx.session.currentUserId:', ctx.session.currentUserId);
@@ -59,7 +62,7 @@ router.post('session-signup', '/signup', async (ctx) => {
     username, first_name, last_name, email, password,
   } = ctx.request.body;
   try {
-    const response = await queryEngine.signUpAPI(API_URL, username, first_name, last_name, email, password);
+    const response = await queryEngine.signUpAPI(API_URL, username, first_name, last_name, email, password, ctx.session.tokenOtherAPI);
     // console.log('Response API1:\n', response[0]);
     // console.log('\nResponse API2:\n', response[1]);
     if (response[0].status_code === 201 && response[1].id) {

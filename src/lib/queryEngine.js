@@ -6,9 +6,21 @@ const fetch = require('node-fetch');
 
 // Utilities
 
-const signUpAPI = async (API_URL, username, first_name, last_name, email, password) => {
+const authOtherAPI = async () => {
+  const url = 'http://charette15.ing.puc.cl/api/people/login';
+  let body = {
+    email: 'serviceuser@grupo4.cl',
+    password: '1234',
+  };
+  body = JSON.stringify(body);
+  const headers = { 'Content-Type': 'application/json' };
+  const response = await fetch(url, { method: 'POST', body, headers }).then(data => data.json());
+  return response.id;
+};
+
+const signUpAPI = async (API_URL, username, first_name, last_name, email, password, tokenOtherAPI) => {
   const url = `${API_URL}/register/`;
-  const url2 = 'https://charette9.ing.puc.cl/api/users/';
+  const url2 = `http://charette15.ing.puc.cl/api/services/179/people?access_token=${tokenOtherAPI}`;
   let body = {
     username,
     first_name,
@@ -17,7 +29,6 @@ const signUpAPI = async (API_URL, username, first_name, last_name, email, passwo
     password,
   };
   let body2 = {
-    username,
     email,
     password,
   };
@@ -26,18 +37,18 @@ const signUpAPI = async (API_URL, username, first_name, last_name, email, passwo
   const headers2 = { 'Content-Type': 'application/json' };
   const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers: headers2 }).then(data => data.json());
-
+  console.log(response, response2);
   return [response, response2]; // { 'Oauth-Token': response.user.oauth_token };
 };
 
-const loginAPI = async (API_URL, username, email, password) => {
+const loginAPI = async (API_URL, username, email, password, tokenOtherAPI) => {
   const url = `${API_URL}/login/`;
   let body = { username, password };
   body = JSON.stringify(body);
   const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
 
   // este token hay que guardarlo en la vista también! Para eso retornar dos responses
-  const url2 = 'https://charette9.ing.puc.cl/api/login/';
+  const url2 = `http://charette15.ing.puc.cl/api/people/login?access_token=${tokenOtherAPI}`;
   let body2 = {
     email,
     password,
@@ -45,7 +56,7 @@ const loginAPI = async (API_URL, username, email, password) => {
   const headers = { 'Content-Type': 'application/json' };
   body2 = JSON.stringify(body2);
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers }).then(data => data.json());
-  // console.log(response2);
+  console.log('response2 is', response2);
 
   return [response, response2];
 
@@ -64,7 +75,7 @@ const fetchMessage = async (API_URL, headers, id) => {
   return response;
 };
 
-const fetchGroup = async (API_URL, headers, id, tokenOtherAPI) => {
+const fetchGroup = async (API_URL, headers, id, postId, tokenOtherAPI) => {
   console.log('[i] Fetching group');
   if (!headers) {
     return "You aren't logged in";
@@ -73,30 +84,14 @@ const fetchGroup = async (API_URL, headers, id, tokenOtherAPI) => {
   console.log(headers);
   const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
 
-  //   {
-  //     status_code: 200,
-  //     group: {
-  //         id: 6,
-  //         description: 'This is a description',
-  //         name: 'Best group ever'
-  //         members: [
-  //             {
-  //                 id: 1,
-  //                 username: 'nachocontreras'
-  //             }
-  //         ],
-  //         unread: 2,
-  //         messages: [3, 6, 9, 12, 45]
-  //     }
-  // }
-
-  const url2 = `https://charette9.ing.puc.cl/api/topics/${id}`;
+  const url2 = `http://charette15.ing.puc.cl/api/posts/${postId}?access_token=${tokenOtherAPI}`;
   const headers2 = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${tokenOtherAPI}`,
   };
   const response2 = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
   console.log(response2);
+  const urlMembers = `http://charette15.ing.puc.cl/api/posts/${postId}/people?$access_token=${tokenOtherAPI}`;
+  const responseMembers = await fetch(urlMembers, { method: 'GET', headers: headers2 }).then(data => data.json());
 
   const members = [];
   response2.subscribers.forEach((sub) => {
@@ -105,12 +100,14 @@ const fetchGroup = async (API_URL, headers, id, tokenOtherAPI) => {
   const parsedResponse = {
     status_code: 200,
     group: {
-      id: response2.id,
+      id1: -3,
+      id2: response2.id,
       description: response2.description,
       name: response2.title,
       members,
       unread: 0,
       messages: response2.post_ids,
+
     },
   };
   console.log(parsedResponse);
@@ -124,7 +121,7 @@ const fetchGroup = async (API_URL, headers, id, tokenOtherAPI) => {
 
   // return [response, parsedResponse];
 
-  return response;
+  return parsedResponse;
 };
 
 
@@ -134,7 +131,10 @@ const postMessageGroup = async (API_URL, headers, group_id, text) => {
     return "You aren't logged in";
   }
   const url = `${API_URL}/message/group/`;
-  let body = { "group_id":group_id, "text":text };
+  let body = {
+    group_id,
+    text,
+  };
   body = JSON.stringify(body);
   const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   return response;
@@ -268,14 +268,22 @@ const deleteUser = async (API_URL, headers, user_id) => {
 // Groups
 // get actual groups
 
-const fetchMemberships = async (API_URL, headers, tokenOtherAPI) => {
-  if (!headers || !tokenOtherAPI) {
-    return { error: 'You aren\'t logged in to both APIs' };
+const fetchMemberships = async (API_URL, headers, user_id, userTokenOtherAPI) => {
+  if (!headers || !userTokenOtherAPI) {
+    return { error: 'You aren\'t logged into both APIs' };
   }
   const url = `${API_URL}/user/groups/`;
   const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  console.log('AAAAAAQ', response);
 
-  return response;
+
+  const url2 = `http://charette15.ing.puc.cl/api/people/${user_id}/subscriptions?access_token=${userTokenOtherAPI}`;
+  const headers2 = {
+    'Content-Type': 'application/json',
+  };
+  const response2 = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
+
+  return [response, response2];
 };
 
 
@@ -291,14 +299,13 @@ const createGroup = async (API_URL, headers, name, description, tokenOtherAPI) =
   const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   console.log('response', response);
 
-  const url2 = 'https://charette9.ing.puc.cl/api/topics/';
+  const url2 = `http://charette15.ing.puc.cl/api/services/179/posts?access_token=${tokenOtherAPI}`;
   let body2 = {
     title: name,
     description,
   };
   const headers2 = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${tokenOtherAPI}`,
   };
   body2 = JSON.stringify(body2);
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers: headers2 }).then(data => data.json());
@@ -310,7 +317,7 @@ const createGroup = async (API_URL, headers, name, description, tokenOtherAPI) =
 };
 
 // Add member to group
-const addMember = async (API_URL, headers, group_id, user_id, topic_identifier, tokenOtherAPI) => {
+const addMember = async (API_URL, headers, group_id, user_id, user_id2, postId, tokenOtherAPI) => {
   if (!headers) {
     return "You aren't logged in";
   }
@@ -318,19 +325,17 @@ const addMember = async (API_URL, headers, group_id, user_id, topic_identifier, 
   let body = { group_id, user_id };
   body = JSON.stringify(body);
   const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
-
-  const url2 = `http://charette9.ing.puc.cl/api/topics/${group_id}/subscribers`;
+  console.log('user_id2', user_id2, "token", tokenOtherAPI);
+  const url2 = `http://charette15.ing.puc.cl/api/people/${user_id2}/subscriptions?access_token=${tokenOtherAPI}`;
   let body2 = {
-    user_id: group_id,
-    topic_identifier,
+    postId,
   };
   const headers2 = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${tokenOtherAPI}`,
   };
   body2 = JSON.stringify(body2);
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers: headers2 }).then(data => data.json());
-
+  console.log('response2 en addMember es', response2);
 
   return response;
 };
@@ -384,4 +389,5 @@ module.exports = {
   removeMember,
   fetchMemberships,
   getTopicId,
+  authOtherAPI,
 };

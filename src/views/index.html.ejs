@@ -7,12 +7,17 @@
 	<input type="button" style="float:right; width: 90%" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="go!"></input>
   </form>
   <br>
-	Pertenezco a <%= groups.length %> grupos
+  Pertenezco a <%= groups.length %> grupos
+  <% console.log(groups) %>
 	<br>
-	<% groups.forEach( (group) => { %>		
-		<br>
-		<input type="button" onClick="changeSrc('/groups/<%= group.id %>')" value="<%= group.name%>"/>
-        <% });%>
+	<% groups.forEach ( (group) => { %>		
+    <br>
+    <% if (group.id1 !== -3) { %>
+      <input type="button" onClick="changeSrc('/groups/<%= group.id1 %>')" value="<%= group.name%>"/>
+    <% } else { %>
+      <input type="button" value="<%= group.name%>"/>
+    <% } %>
+  <% });%>
 	<br>
       <input type="button" onclick="changeSrc('/groups/new')" value="Create one" /> 
     <br>

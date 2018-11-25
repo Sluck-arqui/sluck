@@ -7,7 +7,18 @@ const groups = require('./routes/groups');
 const hashtags = require('./routes/hashtags');
 const session = require('./routes/session');
 
+const queryEngine = require('./lib/queryEngine');
+
 const router = new KoaRouter();
+
+
+router.use(async (ctx, next) => {
+  if (!ctx.session.tokenOtherAPI) {
+    // ctx.session.tokenOtherAPI = await queryEngine.authOtherAPI();
+    console.log('HERE', ctx.session.tokenOtherAPI);
+  }
+  return next();
+});
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {

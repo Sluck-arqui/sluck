@@ -1,42 +1,66 @@
 <div id="react-app"></div>
 <div id="mainBar">
   <div>
-  <form method="GET" action="<%//=searchGroupPath%>">
-	Search for groups here
-	<input style="width: 90%;" type="text" id="searchMe" placeholder="Search here!"></input>
-	<input type="button" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="Buscar"></input>
+  <select id="mySelect" onchange="changeSearch()">
+      <option value="1">Search Group</option>
+      <option value="2">Search Hashtag</option>
+      <option value="3">Search User</option>
+  </select>
+  <form id="1" method="GET" action="<%//=searchGroupPath%>">
+    <input style="width: 90%;" type="text" id="searchMe" placeholder="Search group here!"></input>
+    <input type="button" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="Serch"></input>
   </form>
-  
+  <form id="2" style="display: none" action="<%= newHashtagSearch %>" method="post">
+    <input style="width: 90%;" type="text" name="text" placeholder="Search a hashtag here!"/>
+    <input type="submit" value="Search"/>
+  </form>
+  <form id="3" style="display: none" action="<%= newUsernameSearch %>" method="post">
+    <input style="width: 90%;" type="text" name="username" placeholder="Search an username here!"/>
+    <input type="submit" value="Search"/>
+  </form>
   <br>
   Pertenezco a <%= groups.length %> grupos
   <br>
   <input type="button" onclick="changeSrc('/groups/new')" value="Crear nuevo grupo" /> 
-
-	<% groups.forEach ( (group) => { %>		
+  <ul>
+  <% groups.forEach ( (group) => { %>		
+    <li class="group">
     <br>
     <% if (group.id1 !== -3) { %>
-      <input type="button" onClick="changeSrc('/groups/<%= group.id1 %>/<%=group.id2%>')" value="<%= group.name%>"/>
+      <input type="button" class="groupButton" onClick="changeSrc('/groups/<%= group.id1 %>/<%=group.id2%>')" value="<%= group.name%>"/>
     <% } else { %>
-      <input type="button" onClick="changeSrc('/groups/<%= group.id1 %>/<%=group.id2%>')" value="<%= group.name%>"/>
+      <input type="button" class="groupButton" onClick="changeSrc('/groups/<%= group.id1 %>/<%=group.id2%>')" value="<%= group.name%>"/>
     <% } %>
+    </li>
   <% });%>
-	<form action="<%= newHashtagSearch %>" method="post">
-        <input type="text" name="text" placeholder="hashtag"/>
-        <input type="submit" value="Search"/>
-  </form>
+  </ul>
+  </div>
 
-  <form action="<%= newUsernameSearch %>" method="post">
-    <input type="text" name="username" placeholder="username"/>
-    <input type="submit" value="Search"/>
-  </form>
-
-  </div>
-  <div>
-  </div>
-  <div>
-    My People
-  </div>
 </div>
 <iframe id="mainFrame">
 </iframe>
 </form>
+<script>
+  function changeSearch() {
+    var id = document.getElementById("mySelect").value;
+    var x = document.getElementById(id);
+    console.log(x);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    if (id == 1) {
+      var option1 = document.getElementById("2");
+      var option2 = document.getElementById("3");
+    } else if (id == 2) {
+      var option1 = document.getElementById("1");
+      var option2 = document.getElementById("3");
+    } else if (id == 3) {
+      var option1 = document.getElementById("1");
+      var option2 = document.getElementById("2");
+    }
+    option1.style.display = "none";
+    option2.style.display = "none";
+  }
+</script>

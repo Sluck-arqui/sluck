@@ -41,9 +41,16 @@
         display: flex;
         justify-content: flex-end;
       }
+      .nav-items {
+        list-style-type: none;
+        display: flex;
+        justify-content: flex-end;
+        padding: 4%
+      }
       .single-form {
         border-style: none;
       }
+
       input {
         margin: 5px;
       }
@@ -117,7 +124,13 @@
         margin-left: -5%;
         margin-right: -5%;
       }
-
+      .group {
+        list-style-type: none;
+      }
+      .groupButton {
+        margin-bottom: -5px;
+        margin-left: -30px;
+      }
       .field {
         width: 65%;
         border-radius: 10px;
@@ -164,10 +177,13 @@
         color: white;
         font-weight: lighter;
       }
+      
+      
+
     </style>
   </head>
   <body>
-    <div class="topnav">
+    <nav class="topnav">
       <img src="/assets/sluck-logo.png" width="150" height="150">
       <% if (!currentUser) { %>
         <div>
@@ -182,11 +198,16 @@
           </form>
         </div>
       <% } else { %>
+        <!-- <ul class="nav-items">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul> -->
         <form action="<%= destroySessionPath %>" class="logoutForm" method="delete">                  
           <input class="submit-form" type="submit" value="Salir">  
         </form>
       <% } %>
-    </div>
+      </nav>
 	<% if (currentUser) { %>
 	<nav>
 		<a href="<%= destroySessionPath %>">Salir</a>
@@ -199,6 +220,7 @@
   <script>
 	function changeSrc(loc){
 		document.getElementById('mainFrame').src = loc;
-	}
+  }
+  
   </script>
 </html>

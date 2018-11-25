@@ -20,6 +20,15 @@ router.get('session-new', '/', async (ctx) => {
   delete ctx.flashMessage.notice;
 });
 
+
+router.get('signup view', '/signup', async (ctx) => {
+  await ctx.render('session/signup',
+            {
+              notice: ctx.flashMessage.notice,
+              submitSignupPath: ctx.router.url('session-signup'),
+              submitLoginPath: ctx.router.url('session-create'),
+            },)
+});
 router.post('session-create', '/', async (ctx) => {
   console.log('LOGIN DATA RECEIVED: \n', ctx.request.body);
   const { username, email, password } = ctx.request.body;

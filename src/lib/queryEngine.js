@@ -247,7 +247,11 @@ const fetchHashtagSearch = async (API_URL, headers, text, limit) => {
     return "You aren't logged in";
   }
   const url = `${API_URL}/search/hashtag/?text=${text}&limit=${limit}`;
-  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  let response = await fetch(url, { method: 'GET', headers });
+  console.log(response);
+  response = response.json();
+  console.log(response);
+  console.log('Esa es la response');
   return response;
 };
 

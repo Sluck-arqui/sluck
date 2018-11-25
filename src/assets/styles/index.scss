@@ -2,7 +2,6 @@
 @import './hello';
 @import './chat';
 @import './list';
-
 body {
 	font-family: Arial, Helvetica, sans-serif;}
 form {border: 3px solid #f1f1f1;}
@@ -15,7 +14,6 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
-
 button {
     background-color: #4CAF50;
     color: white;
@@ -28,6 +26,14 @@ button {
 
 button:hover {
     opacity: 0.8;
+}
+
+h3 {
+    margin-top: 700px;
+}
+
+.welcome {
+    margin-top: 700px;
 }
 
 .cancelbtn {
@@ -68,5 +74,5 @@ span.psw {
 
 .form_container{
 	padding: 25%;
-	margin-top: -20%;
+	margin-top: -200%;
 }

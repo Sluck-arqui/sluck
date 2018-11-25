@@ -11,8 +11,8 @@ const API_URL = 'http://charette11.ing.puc.cl'; // probablemente process.env.API
 
 router.get('create-group', '/new', async (ctx) => {
   await ctx.render('/groups/new', {
-	layout: false,
-        submitGroupPath: ctx.router.url('create-group-submit')
+	  layout: false,
+    submitGroupPath: ctx.router.url('create-group-submit'),
   });
 });
 
@@ -20,9 +20,10 @@ router.post('create-group-submit', '/new', async (ctx) => {
   const { name } = ctx.request.body;
   const { description } = ctx.request.body;
   // esto supone que se mandó por el post un field text
-  const headers = {
-    'Oauth-token': ctx.session.currentToken,
-  };
+  const result = await ctx.orm.userKey.findOne({ where: { userId: ctx.session.currentUserId.toString() } });
+  const token = result.token;
+  console.log(token);
+  const headers = {"Oauth-Token": token};
   const ans = await queryEngine.createGroup(API_URL, headers, name, description);
   console.log(ans);
   await queryEngine.addMember(API_URL, headers, ans.id, ctx.session.currentUserId);

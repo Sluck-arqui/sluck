@@ -16,7 +16,8 @@ router.get('index','/', async (ctx) => {
     console.log('log');
     let result = await ctx.orm.userKey.findOne({ where: {userId: ctx.session.currentUserId.toString()}})
     let token = result.token
-    const headers = {"Oauth-token":token};
+    console.log(token);
+    const headers = {"Oauth-Token": token};
     const response = await queryEngine.fetchMembership(API_URL, headers);
     let myGroups = [];
     console.log(response['groups']);

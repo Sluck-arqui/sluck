@@ -145,7 +145,11 @@ const fetchHashtagSearch = async (API_URL, headers, text, limit) => {
     return "You aren't logged in";
   }
   const url = `${API_URL}/search/hashtag/?text=${text}&limit=${limit}`;
-  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  let response = await fetch(url, { method: 'GET', headers });
+  console.log(response);
+  response = response.json();
+  console.log(response);
+  console.log('Esa es la response');
   return response;
 };
 
@@ -195,9 +199,11 @@ const fetchMembership = async (API_URL, headers) => {
     return "You aren't logged in";
   }
   const url = `${API_URL}/user/groups/`;
-  const response = await fetch(url, { method: 'GET', headers, }).then(data => data.json());
+  console.log(headers);
+  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  console.log(response);
   return response;
-}
+};
 
 
 // Create group
@@ -208,10 +214,14 @@ const createGroup = async (API_URL, headers, name, description) => {
   const url = `${API_URL}/group/`;
   let body = { name, description };
   body = JSON.stringify(body);
+  console.log(body);
   console.log("query");
-  const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
+  console.log(headers);
+  let response = await fetch(url, { method: 'POST', headers, body });
+  console.log(response);
+  response = response.json();
   console.log(response);  
-return response;
+  return response;
 };
 
 // Add member to group

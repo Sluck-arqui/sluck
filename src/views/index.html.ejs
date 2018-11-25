@@ -4,7 +4,7 @@
   <form method="GET" action="<%//=searchGroupPath%>">
 	Search for groups here
 	<input style="width: 90%;" type="text" id="searchMe" placeholder="Search here!"></input>
-	<input type="button" style="float:right; width: 90%" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="go!"></input>
+	<input type="button" onClick="changeSrc('groups/search/'+document.getElementById('searchMe').value)" value="Buscar"></input>
   </form>
   <br>
 	Pertenezco a <%= groups.length %> grupos

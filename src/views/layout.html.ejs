@@ -62,13 +62,15 @@
         border-radius: 20px;
       }
       #mainBar{
+        margin-top: 50px;
         float: left;
         width: 29%;
       }
       #mainFrame{
+        margin-top: 50px;
         float: right;
         width: 70%;
-        height: 1000px;
+        height: 550px;
       }
 
         .form-div{
@@ -137,9 +139,9 @@
         color: black;
         font-size: 15px;
       }
-      .input-form {
+      .input-form { 
         height: 32px;
-        width: 225px;
+        width: 155px;
         border-radius: 4px;
         border: 1px solid grey;
         background-color: #FDFDFF;
@@ -172,6 +174,8 @@
           <form action="<%= submitLoginPath %>" class="loginForm" method="post">
             <label for="uname"><b>Usuario</b></label>
             <input type="text" placeholder="Ingresar usuario" value="<%= locals.username %>" class="input-form" name="username" required>
+            <label for="email"><b>Email</b></label>
+            <input type="email" name="email" placeholder="la_juanita@sanchez.cl" id="email" value="<%= locals.email %>" />
             <label for="psw"><b>Contraseña </b></label>
             <input type="password" placeholder="Ingresar contraseña" class="input-form" name="password" required>                  
             <input class="submit-form" type="submit" value="Iniciar Sesión">  

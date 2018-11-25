@@ -1,10 +1,9 @@
 const config = {
   default: {
-    username: 'mauricio',
-    password: 'Candita5.',
-    dialect: process.env.DB_DIALECT || 'postgres',
-    database: 'mauriciodb',
-    host: process.env.DB_HOST || '127.0.0.1',
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST || 'charette10.ing.puc.cl',
     operatorsAliases: false,
   },
   development: {

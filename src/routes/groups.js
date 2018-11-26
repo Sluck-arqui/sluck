@@ -51,6 +51,7 @@ router.get('group-show', '/:id1/:id2', async (ctx) => {
     const headers = { 'OAuth-token': token };
     group = await queryEngine.fetchGroup(API_URL, headers, ctx.params.id1, ctx.params.id2, ctx.session.tokenOtherAPI);
     messages = [];
+    console.log(group);
     // console.log(group.messages);
     for (let i = 0; i < group.messages.length; i++) {
       console.log(group.messages.length);
@@ -73,12 +74,13 @@ router.get('group-show', '/:id1/:id2', async (ctx) => {
       messages.push(message);
     }
   }
-  
+  console.log('este grupo se pasa');
+  console.log(group);
   await ctx.render('groups/view', {
     layout: false,
     group,
     messages,
-    addMemberPath: ctx.router.url('add-member-group',{"id1": ctx.params.id1, "id2": ctx.params.id2 }),
+    addMemberPath: ctx.router.url('add-member-group', {"id1": ctx.params.id1, "id2": ctx.params.id2 }),
     submitMessagePath: ctx.router.url('messages-group-add',{"id1": ctx.params.id1, "id2": ctx.params.id2}),
   });
 });
@@ -97,8 +99,8 @@ router.post('messages-group-add', '/message/:id1/:id2', async (ctx) => {
 
 router.post('add-member-group', '/:id1/:id2', async (ctx) => {
   try {
-    const { user_id } = ctx.request.body;
-    const { id2 } = ctx.request.body;
+    const { userId } = ctx.params.id1;
+    const { id2 } = ctx.params.id2;
     const { group } = ctx.params.id;
     const { headers } = ctx.state;
     // esto supone que se mandó por el post un field text
@@ -111,7 +113,7 @@ router.post('add-member-group', '/:id1/:id2', async (ctx) => {
 
     const topic_id = await queryEngine.getTopicId(group, ctx.session.currentTokenOtherAPI);
 
-    await queryEngine.addMember(API_URL, headers, group.id, user_id, id, ctx.session.tokenOtherAPI);
+    await queryEngine.addMember(API_URL, headers, group.id, userId, id2, ctx.session.tokenOtherAPI);
   } catch (e) {
     //nada
   }

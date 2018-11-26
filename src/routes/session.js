@@ -23,13 +23,14 @@ router.get('session-new', '/', async (ctx) => {
 
 router.get('signup view', '/signup', async (ctx) => {
   await ctx.render('session/signup',
-            {
-              notice: ctx.flashMessage.notice,
-              submitSignupPath: ctx.router.url('session-signup'),
-              submitLoginPath: ctx.router.url('session-create'),
-            },)
+    {
+      notice: ctx.flashMessage.notice,
+      submitSignupPath: ctx.router.url('session-signup'),
+      submitLoginPath: ctx.router.url('session-create'),
+    },)
 });
 router.post('session-create', '/', async (ctx) => {
+  ctx.session.tokenOtherAPI = await queryEngine.authOtherAPI();
   console.log('LOGIN DATA RECEIVED: \n', ctx.request.body);
   const { username, email, password } = ctx.request.body;
   const [response, response2] = await queryEngine.loginAPI(API_URL, username, email, password, ctx.session.tokenOtherAPI);

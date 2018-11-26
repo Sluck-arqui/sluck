@@ -38,6 +38,7 @@ const signUpAPI = async (API_URL, username, first_name, last_name, email, passwo
   const response = await fetch(url, { method: 'POST', body }).then(data => data.json());
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers: headers2 }).then(data => data.json());
   console.log(response, response2);
+  console.log('eso es registro');
   return [response, response2]; // { 'Oauth-Token': response.user.oauth_token };
 };
 
@@ -58,7 +59,7 @@ const loginAPI = async (API_URL, username, email, password, tokenOtherAPI) => {
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers }).then(data => data.json());
   console.log('response2 is', response2);
 
-  return [response];
+  return [response, response2];
 
   // return response; // { 'Oauth-Token': response.user.oauth_token };
 };
@@ -373,6 +374,7 @@ const addMember = async (API_URL, headers, group_id, user_id, postId, user_id2, 
   if (!headers) {
     return "You aren't logged in";
   }
+  console.log('try to add');
   const url = `${API_URL}/group/member/`;
   let body = { group_id, user_id };
   body = JSON.stringify(body);

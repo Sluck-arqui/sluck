@@ -115,7 +115,7 @@ router.post('add-member-group', '/:id1/:id2', async (ctx) => {
   } catch (e) {
     //nada
   }
-  ctx.redirect('/');
+  ctx.redirect(ctx.router.url('group-show', { "id1": ctx.params.id1, "id2": ctx.params.id2 }));
 });
 
 router.post('delete-member-group', '/:id', async (ctx) => {

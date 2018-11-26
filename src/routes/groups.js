@@ -107,7 +107,7 @@ router.post('add-member-group', '/:id1/:id2', async (ctx) => {
 
     // GET /services/{id}/people
 
-    const urlPeople = `http://charette15.ing.puc.cl/api/services/179/people?access_token=${ctx.session.tokenOtherAPI}`;
+    const urlPeople = `http://charette15.ing.puc.cl/api/services/184/people?access_token=${ctx.session.tokenOtherAPI}`;
 
     const topic_id = await queryEngine.getTopicId(group, ctx.session.currentTokenOtherAPI);
 

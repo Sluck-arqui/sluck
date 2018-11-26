@@ -20,7 +20,7 @@ const authOtherAPI = async () => {
 
 const signUpAPI = async (API_URL, username, first_name, last_name, email, password, tokenOtherAPI) => {
   const url = `${API_URL}/register/`;
-  const url2 = `http://charette15.ing.puc.cl/api/services/179/people?access_token=${tokenOtherAPI}`;
+  const url2 = `http://charette15.ing.puc.cl/api/services/184/people?access_token=${tokenOtherAPI}`;
   let body = {
     username,
     first_name,
@@ -58,7 +58,7 @@ const loginAPI = async (API_URL, username, email, password, tokenOtherAPI) => {
   const response2 = await fetch(url2, { method: 'POST', body: body2, headers }).then(data => data.json());
   console.log('response2 is', response2);
 
-  return [response, response2];
+  return [response];
 
   // return response; // { 'Oauth-Token': response.user.oauth_token };
 };
@@ -271,7 +271,7 @@ const fetchUsernameSearch = async (API_URL, headers, username, limit, tokenOther
   const headers2 = {
     'Content-Type': 'application/json',
   };
-  const url2 = `http://charette15.ing.puc.cl/api/services/179/people?access_token=${tokenOtherAPI}`;
+  const url2 = `http://charette15.ing.puc.cl/api/services/184/people?access_token=${tokenOtherAPI}`;
   const usersOtherAPI = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
   // console.log('RESPONSE ', usersOtherAPI);
 
@@ -351,7 +351,7 @@ const createGroup = async (API_URL, headers, name, description, tokenOtherAPI) =
   const response = await fetch(url, { method: 'POST', headers, body }).then(data => data.json());
   console.log('response', response);
 
-  const url2 = `http://charette15.ing.puc.cl/api/services/179/posts?access_token=${tokenOtherAPI}`;
+  const url2 = `http://charette15.ing.puc.cl/api/services/184/posts?access_token=${tokenOtherAPI}`;
   let body2 = {
     title: name,
     description,

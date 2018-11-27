@@ -78,12 +78,14 @@ router.post('session-signup', '/signup', async (ctx) => {
 });
 
 router.delete('session-destroy', '/', async (ctx) => {
+  delete ctx.session.userId;
   delete ctx.session.currentUserId;
   delete ctx.session.currentUsername;
   delete ctx.session.currentUserId;
   delete ctx.session.currentUserIdOtherAPI;
   delete ctx.session.currentToken;
   delete ctx.session.currentTokenOtherAPI;
+  delete ctx.session.tokenOtherAPI;
   ctx.flashMessage.notice = 'Término de sesión exitoso';
   ctx.redirect('/');
 });

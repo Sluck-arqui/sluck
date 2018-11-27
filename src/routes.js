@@ -22,7 +22,7 @@ router.use(async (ctx, next) => {
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
-    currentUser: ctx.session.userId && await ctx.orm.userKey.findAll({ where: { userId: ctx.session.userId } }),
+    currentUser: ctx.session.userId,
     destroySessionPath: ctx.router.url('session-destroy'),
     createGroupPath: ctx.router.url('create-group-submit'),
     newHashtagSearch: hashtag => ctx.router.url('new-hashtag-search', { hashtag: hashtag }),

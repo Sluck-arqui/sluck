@@ -198,21 +198,18 @@
           </form>
         </div>
       <% } else { %>
+        <% console.log(currentUser); %>
         <!-- <ul class="nav-items">
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
         </ul> -->
-        <form action="<%= destroySessionPath %>" class="logoutForm" method="delete">                  
+        <form action="<%= destroySessionPath %>" class="logoutForm" method="post">
+            <input type="hidden" name="_method" value="delete" />
           <input class="submit-form" type="submit" value="Salir">  
         </form>
       <% } %>
       </nav>
-	<% if (currentUser) { %>
-	<nav>
-		<a href="<%= destroySessionPath %>">Salir</a>
-	</nav>
-	<% } %>
     <%- body %>
     <!--<script src="/assets/app.js"></script>-->
     <!--<script src="/assets/appReact.js"></script>-->

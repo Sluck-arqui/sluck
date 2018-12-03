@@ -264,10 +264,15 @@ const fetchUsernameSearch = async (API_URL, headers, username, limit, tokenOther
     return "You aren't logged in";
   }
   const url = `${API_URL}/search/username/?username=${username}&limit=${limit}`;
-  const response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
+  let response = await fetch(url, { method: 'GET', headers }).then(data => data.json());
   console.log('response', response);
-  definitiveResponse.username = username;
-  definitiveResponse.id1 = response.users[0].id;
+  response.users.forEach((user) => {
+    if (user.username === username) {
+      definitiveResponse.username = username;
+      definitiveResponse.id1 = user.id;
+      definitiveResponse.email = user.email;
+    }
+  });
 
   const headers2 = {
     'Content-Type': 'application/json',
@@ -280,9 +285,9 @@ const fetchUsernameSearch = async (API_URL, headers, username, limit, tokenOther
   usersOtherAPI.forEach((user) => {
     // console.log('user', user, response.users[0]);
     // console.log('user', user);
-    console.log(response.users[0]);
-    if (user.email === response.users[0].email) {
-      console.log("BINGO");
+    console.log(response.users[0].email, 'vs', user.email);
+    if (user.email === definitiveResponse.email) {
+      console.log('BINGO');
       definitiveResponse.id2 = user.id;
     }
   });

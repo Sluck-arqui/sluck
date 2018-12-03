@@ -1,1 +1,11 @@
-Hola
+<div style="margin-top: 50px;"></div>
+
+<ul>
+    <% search.forEach((match) => { %>
+        <%console.log('match', match)%>
+        <li>
+            <p>Author: <%= match.author %>: <%= match.text %></p>
+        </li>
+    <% }) %>
+</ul>
+

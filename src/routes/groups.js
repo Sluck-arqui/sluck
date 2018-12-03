@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const KoaRouter = require('koa-router');
 const queryEngine = require('../lib/queryEngine.js');
 
@@ -28,7 +29,7 @@ router.post('create-group-submit', '/new', async (ctx) => {
     API_URL, headers, name,
     description, ctx.session.tokenOtherAPI,
   );
-  const { id } = group[1];
+  // const { id } = group[1];
   // console.log(group);
   // console.log('SESSION BEFORE ADD MEMBER:\n', ctx.session);
   await queryEngine.addMember(API_URL, headers, group[0].id, ctx.session.currentUserId, group[1].id, ctx.session.currentUserIdOtherAPI, ctx.session.currentUserTokenOtherAPI);
@@ -67,10 +68,20 @@ router.get('group-show', '/:id1/:id2', async (ctx) => {
     // console.log('group es ', group);
     // messages = group.group.messages2;
     messages = [];
+    const url2 = `http://charette15.ing.puc.cl/api/services/184/people?access_token=${ctx.session.tokenOtherAPI}`;
+    const headers2 = {
+      'Content-Type': 'application/json',
+    };
+    const usersOtherAPI = await fetch(url2, { method: 'GET', headers: headers2 }).then(data => data.json());
     for (let i = 0; i < group.group.messages2.length; i++) {
       // console.log(messages.length);
       // console.log(`[i] Fetching message ${group.group.messages2[i]}`);
       const message = group.group.messages2[i];
+      usersOtherAPI.forEach((user) => {
+        if (user.id === message.personId) {
+          message.author = user.email;
+        }
+      });
       messages.push(message);
     }
   }
